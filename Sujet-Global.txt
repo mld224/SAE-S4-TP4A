@@ -1,0 +1,3 @@
+Il s'agit de développer un jeu massivement multijoueur, mais colocalisé (pas online, mais avec tous les joueurs physiquement présents devant un grand écran partagé commun, seul espace de jeu, dans un amphi par exemple ou une salle de cours avec projecteur). Les contrôles se font soit avec le téléphone des joueurs (manette virtuelle par exemple), soit éventuellement en reconnaissance de gestes avec une caméra filmant les joueurs de la salle.
+
+La réutilisation de code source de jeu déjà disponible est autorisée, pour adaptation au contexte multijoueur.
