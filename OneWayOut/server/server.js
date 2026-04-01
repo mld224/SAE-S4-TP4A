@@ -155,14 +155,44 @@ function lancerVote(duree = 10) {
      - http://adresse:8080 → sert les fichiers HTML/CSS/JS
      - ws://adresse:8080   → accepte les connexions WebSocket
    Tout sur le meme port */
+/* ===== EVENEMENT : UN CLIENT SE CONNECTE =====  */
+wss.on('connection', (ws) => {
+  clients.add(ws);
+  console.log(`Joueur connecte ! Total: ${clients.size}`);
+
+  ws.on('message', (message) => {
+    const data = message.toString();
+
+    /* Si c'est Unity qui demande de lancer un vote
+       Le message peut contenir une duree : "START_VOTE:8"
+       Ou juste "START_VOTE" (10 secondes par defaut)
+       
+       split(":") coupe la chaine au niveau des ":"
+       Exemple : "START_VOTE:8".split(":") → ["START_VOTE", "8"]
+       parseInt convertit "8" en nombre 8
+       || 10 → si pas de duree specifiee, 10 par defaut */
+    if (data.startsWith("START_VOTE")) {
+      const parts = data.split(":");
+      const duree = parseInt(parts[1]) || 10;
+      lancerVote(duree);
+    }
+
+    /* Si c'est un vote d'un telephone (A, B ou C) */
+    if (voteOuvert && ['A', 'B', 'C'].includes(data)) {
+      votes[data]++;
+      console.log(`Vote recu: ${data} | A:${votes.A} B:${votes.B} C:${votes.C}`);
+    }
+  });
+
+  ws.on('close', () => {
+    clients.delete(ws);
+    console.log(`Joueur deconnecte. Total: ${clients.size}`);
+  });
+});
+
+/* ===== DEMARRAGE DU SERVEUR ===== */
 httpServer.listen(PORT, () => {
   console.log(`Serveur demarre sur le port ${PORT}`);
   console.log(`Interface mobile : http://localhost:${PORT}`);
+  console.log(`En attente de Unity pour lancer les votes...`);
 });
-
-/* ===== TEST AUTOMATIQUE =====
-   Lance un vote toutes les 15 secondes pour tester
-   A supprimer plus tard quand Unity declenchera les votes */
-setInterval(() => {
-  lancerVote(10);
-}, 15000);
