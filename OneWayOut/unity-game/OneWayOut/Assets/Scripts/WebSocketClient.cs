@@ -3,6 +3,19 @@ using UnityEngine;
 using NativeWebSocket;
 using TMPro;
 
+/* Classes pour deserialiser les messages JSON du serveur
+   JsonUtility.FromJson a besoin de classes qui correspondent
+   a la structure du JSON recu */
+
+/* Pour le message vote_start : {"type":"vote_start","duree":10} */
+[Serializable]
+public class VoteStartMessage
+{
+    public string type;
+    public int duree;
+}
+
+/* Pour le detail des votes dans vote_result */
 [Serializable]
 public class VotesData
 {
@@ -11,32 +24,40 @@ public class VotesData
     public int C;
 }
 
+/* Pour le message vote_result : {"type":"vote_result","resultat":"A","details":{...}} */
 [Serializable]
-public class VotesMessage
+public class VoteResultMessage
 {
     public string type;
-    public VotesData votes;
+    public string resultat;
+    public VotesData details;
 }
 
 public class WebSocketClient : MonoBehaviour
 {
+    /* Connexion WebSocket vers le serveur Node.js */
     private WebSocket websocket;
 
-    public int voteA;
-    public int voteB;
-    public int voteC;
+    /* Reference vers le VoteManager pour lui transmettre les resultats
+       On la relie dans l'inspecteur Unity (glisser-deposer) */
+    public VoteManager voteManager;
 
-    public TMP_Text textVoteA;
-    public TMP_Text textVoteB;
-    public TMP_Text textVoteC;
+    /* Textes UI pour afficher l'etat de la connexion */
+    public TMP_Text connectionStatus;
 
     async void Start()
     {
-        websocket = new WebSocket("ws://192.168.1.188:8080");
+        /* IMPORTANT : remplace par l'URL ngrok ou l'IP locale
+           En local : ws://localhost:8080
+           Avec ngrok : wss://ton-url.ngrok-free.app */
+        websocket = new WebSocket("wss://magali-lowery-smelly.ngrok-free.dev/");
 
+        /* Quand la connexion s'ouvre */
         websocket.OnOpen += () =>
         {
-            Debug.Log("Connexion au serveur !");
+            Debug.Log("Connecte au serveur !");
+            if (connectionStatus != null)
+                connectionStatus.text = "Connecte";
         };
 
         websocket.OnError += (e) =>
@@ -46,27 +67,43 @@ public class WebSocketClient : MonoBehaviour
 
         websocket.OnClose += (e) =>
         {
-            Debug.Log("Connexion fermée !");
+            Debug.Log("Connexion fermee !");
+            if (connectionStatus != null)
+                connectionStatus.text = "Deconnecte";
         };
 
+        /* Quand on recoit un message du serveur */
         websocket.OnMessage += (bytes) =>
         {
+            /* Convertit les bytes en texte lisible */
             string message = System.Text.Encoding.UTF8.GetString(bytes);
-            Debug.Log("JSON reçu : " + message);
+            Debug.Log("Message recu : " + message);
 
             try
             {
-                VotesMessage data = JsonUtility.FromJson<VotesMessage>(message);
+                /* On essaie d'abord de lire le type du message
+                   pour savoir comment le traiter */
+                VoteStartMessage baseMsg = JsonUtility.FromJson<VoteStartMessage>(message);
 
-                if (data != null && data.type == "votes" && data.votes != null)
+                if (baseMsg.type == "vote_start")
                 {
-                    voteA = data.votes.A;
-                    voteB = data.votes.B;
-                    voteC = data.votes.C;
+                    /* Le serveur confirme que le vote a demarre
+                       On pourrait utiliser baseMsg.duree si besoin */
+                    Debug.Log("Vote demarre pour " + baseMsg.duree + " secondes");
+                }
+                else if (baseMsg.type == "vote_result")
+                {
+                    /* Le vote est termine, on recoit le resultat
+                       On parse le message complet avec les details */
+                    VoteResultMessage result = JsonUtility.FromJson<VoteResultMessage>(message);
+                    Debug.Log("Resultat du vote : " + result.resultat);
 
-                    Debug.Log($"Votes mis à jour -> A: {voteA} | B: {voteB} | C: {voteC}");
-
-                    UpdateVoteUI();
+                    /* On transmet le resultat au VoteManager
+                       qui va bouger le vehicule en consequence */
+                    if (voteManager != null)
+                    {
+                        voteManager.OnVoteResult(result.resultat, result.details);
+                    }
                 }
             }
             catch (Exception ex)
@@ -76,9 +113,11 @@ public class WebSocketClient : MonoBehaviour
         };
 
         await websocket.Connect();
-        UpdateVoteUI();
     }
 
+    /* DispatchMessageQueue doit etre appele chaque frame
+       pour traiter les messages WebSocket dans le thread principal
+       Unity ne permet pas de modifier l'UI depuis un autre thread */
     void Update()
     {
 #if !UNITY_WEBGL || UNITY_EDITOR
@@ -86,16 +125,16 @@ public class WebSocketClient : MonoBehaviour
 #endif
     }
 
-    void UpdateVoteUI()
+    /* Fonction appelee par VoteManager quand le vehicule
+       arrive a un embranchement. Envoie START_VOTE au serveur
+       duree = nombre de secondes pour voter */
+    public async void DemanderVote(int duree = 10)
     {
-        if (textVoteA != null)
-            textVoteA.text = "A : " + voteA;
-
-        if (textVoteB != null)
-            textVoteB.text = "B : " + voteB;
-
-        if (textVoteC != null)
-            textVoteC.text = "C : " + voteC;
+        if (websocket != null && websocket.State == WebSocketState.Open)
+        {
+            await websocket.SendText("START_VOTE:" + duree);
+            Debug.Log("Demande de vote envoyee au serveur (duree: " + duree + "s)");
+        }
     }
 
     async void OnApplicationQuit()
@@ -103,14 +142,6 @@ public class WebSocketClient : MonoBehaviour
         if (websocket != null)
         {
             await websocket.Close();
-        }
-    }
-
-    public async void SendReset()
-    {
-        if (websocket != null && websocket.State == WebSocketState.Open)
-        {
-            await websocket.SendText("RESET");
         }
     }
 }
