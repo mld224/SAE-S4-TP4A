@@ -2,29 +2,45 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <!-- Empeche le zoom sur mobile et force la largeur a celle de l'ecran -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
   <title>One Way Out - Controller</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
+
   <div class="container">
-    <h1>One Way Out</h1>
 
-    <div id="status">Déconnecté</div>
+    <!-- Titre du jeu avec style neon -->
+    <h1 class="title">ONE WAY OUT</h1>
 
-    <div class="scoreboard">
-      <div>A : <span id="voteA">0</span></div>
-      <div>B : <span id="voteB">0</span></div>
-      <div>C : <span id="voteC">0</span></div>
-    </div>
+    <!-- Indicateur de connexion au serveur -->
+    <div id="status" class="status disconnected">Connexion en cours...</div>
 
+    <!-- Zone d'info : affiche "En attente..." ou le compte a rebours -->
+    <div id="info" class="info">En attente du prochain vote...</div>
+
+    <!-- Les 3 boutons de vote -->
     <div class="buttons">
-      <button id="btnA">A</button>
-      <button id="btnB">B</button>
-      <button id="btnC">C</button>
+      <button id="btnA" class="vote-btn btn-a" disabled>
+        <span class="btn-icon">←</span>
+        <span class="btn-label">Gauche</span>
+      </button>
+
+      <button id="btnB" class="vote-btn btn-b" disabled>
+        <span class="btn-icon">↑</span>
+        <span class="btn-label">Tout droit</span>
+      </button>
+
+      <button id="btnC" class="vote-btn btn-c" disabled>
+        <span class="btn-icon">→</span>
+        <span class="btn-label">Droite</span>
+      </button>
     </div>
 
-    <button id="resetBtn" class="reset">RESET</button>
+    <!-- Message de confirmation apres un vote -->
+    <div id="feedback" class="feedback hidden">Vote enregistre !</div>
+
   </div>
 
   <script src="script.js"></script>

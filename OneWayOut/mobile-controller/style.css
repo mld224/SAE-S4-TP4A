@@ -1,69 +1,316 @@
-body {
+/* ===== RESET GLOBAL =====
+   Applique a tous les elements de la page (*).
+   
+   margin: 0 → supprime les marges externes par defaut du navigateur
+   padding: 0 → supprime les marges internes par defaut
+   box-sizing: border-box → change le calcul de la taille des elements
+     Par defaut, un element de width:100px + padding:10px = 120px au total
+     Avec border-box, il fait 100px au total (le padding est inclus dedans)
+     C'est plus intuitif pour gerer les tailles */
+* {
   margin: 0;
-  font-family: Arial, sans-serif;
-  background: #111;
-  color: white;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* ===== CORPS DE LA PAGE =====
+   
+   font-family → police d'ecriture, avec des alternatives si la premiere n'est pas dispo
+     'Segoe UI' est la police de Windows, Arial est le fallback, sans-serif en dernier recours
+   
+   background: linear-gradient(angle, couleur1 position1, couleur2 position2)
+     Cree un degrade entre 2 couleurs
+     180deg = de haut en bas (0deg = de bas en haut, 90deg = de gauche a droite)
+     Exemple : linear-gradient(180deg, red 0%, blue 100%) → rouge en haut, bleu en bas
+     Ici on fait un degrade de bleu tres fonce (#0a0a1a) vers noir-bleu (#0d1117)
+   
+   color: #ffffff → couleur du texte (blanc)
+   
+   min-height: 100vh → la page fait minimum toute la hauteur de l'ecran
+     vh = viewport height = hauteur visible du navigateur
+     100vh = 100% de cette hauteur
+   
+   display: flex → active le mode flexbox (systeme de mise en page)
+   justify-content: center → centre les enfants horizontalement
+   align-items: center → centre les enfants verticalement
+     Avec ces 3 proprietes, tout le contenu est pile au centre de l'ecran
+   
+   overflow: hidden → cache tout ce qui depasse de l'ecran (empeche le scroll)
+   
+   user-select: none → empeche la selection de texte
+     Sur mobile, quand on appuie vite sur les boutons, le telephone
+     essaie de selectionner le texte (surlignage bleu), ca bloque ce comportement */
+body {
+  font-family: 'Segoe UI', Arial, sans-serif;
+  background: linear-gradient(180deg, #0a0a1a 0%, #0d1117 100%);
+  color: #ffffff;
+  min-height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
-  min-height: 100vh;
+  overflow: hidden;
+  user-select: none;
 }
 
+/* ===== CONTENEUR PRINCIPAL =====
+   Boite qui contient tout le contenu (titre, boutons, etc.)
+   
+   width: 90% → prend 90% de la largeur de l'ecran du telephone
+   max-width: 400px → ne depasse jamais 400px (sur tablette ou PC ca reste compact)
+   text-align: center → centre tout le texte
+   
+   display: flex + flex-direction: column → empile les enfants verticalement
+     (par defaut flex les met en ligne horizontale)
+   align-items: center → centre les enfants horizontalement dans la colonne
+   
+   gap: 25px → espace de 25px entre chaque enfant
+     Exemple : si t'as un titre puis un bouton, il y a 25px entre les deux
+     C'est plus propre que de mettre des margin sur chaque element */
 .container {
   width: 90%;
-  max-width: 500px;
+  max-width: 400px;
   text-align: center;
-}
-
-h1 {
-  margin-bottom: 20px;
-}
-
-#status {
-  margin-bottom: 20px;
-  padding: 10px;
-  border-radius: 8px;
-  background: #333;
-}
-
-.scoreboard {
   display: flex;
-  justify-content: space-around;
-  margin-bottom: 30px;
-  font-size: 1.2rem;
+  flex-direction: column;
+  align-items: center;
+  gap: 25px;
 }
 
+/* ===== TITRE "ONE WAY OUT" =====
+   
+   font-size: 2rem → 2x la taille de texte par defaut (rem = relative au root)
+   font-weight: 900 → epaisseur du texte (100=fin, 400=normal, 700=bold, 900=max)
+   letter-spacing: 4px → ajoute 4px entre chaque lettre (effet futuriste espace)
+   color: #00f0ff → cyan neon
+   
+   text-shadow: decalageX decalageY flou couleur
+     Ajoute une ombre/lueur autour du texte
+     0 0 10px → pas de decalage, flou de 10px = lueur douce
+     On en empile 2 pour un effet neon :
+       - 1ere (10px, 60% opacite) : lueur proche et intense
+       - 2eme (30px, 30% opacite) : lueur lointaine et douce
+     Exemple simple : text-shadow: 2px 2px 5px black → ombre noire decalee */
+.title {
+  font-size: 2rem;
+  font-weight: 900;
+  letter-spacing: 4px;
+  color: #00f0ff;
+  text-shadow:
+    0 0 10px rgba(0, 240, 255, 0.6),
+    0 0 30px rgba(0, 240, 255, 0.3);
+}
+
+/* ===== STATUT DE CONNEXION =====
+   Pastille arrondie qui indique si on est connecte ou non
+   
+   padding: 8px 20px → 8px en haut/bas, 20px a gauche/droite
+     Quand 2 valeurs : la 1ere = vertical, la 2eme = horizontal
+   border-radius: 20px → arrondit les coins (20px = effet pilule)
+   font-size: 0.85rem → texte un peu plus petit que la normale
+   font-weight: 600 → semi-gras
+   letter-spacing: 1px → leger espacement entre les lettres */
+.status {
+  padding: 8px 20px;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 1px;
+}
+
+/* ===== STATUT CONNECTE =====
+   Couleurs appliquees quand le joueur est connecte au serveur
+   
+   rgba(r, g, b, a) → couleur avec transparence
+     r,g,b = rouge, vert, bleu (0 a 255)
+     a = opacite (0 = invisible, 1 = opaque)
+   Exemple : rgba(0, 255, 100, 0.15) = vert a 15% d'opacite
+   
+   border: epaisseur style couleur
+     1px solid = bordure pleine de 1px */
+.connected {
+  background: rgba(0, 255, 100, 0.15);
+  color: #00ff64;
+  border: 1px solid rgba(0, 255, 100, 0.3);
+}
+
+/* ===== STATUT DECONNECTE =====
+   Meme principe que connected mais en rouge */
+.disconnected {
+  background: rgba(255, 50, 50, 0.15);
+  color: #ff4444;
+  border: 1px solid rgba(255, 50, 50, 0.3);
+}
+
+/* ===== ZONE D'INFO =====
+   Affiche "En attente du prochain vote..." ou le compte a rebours
+   
+   min-height: 30px → hauteur minimum, meme si le texte est court
+     Empeche la page de "sauter" quand le contenu change de taille */
+.info {
+  font-size: 1.1rem;
+  color: #8892a0;
+  min-height: 30px;
+}
+
+/* ===== ZONE D'INFO ACTIVE =====
+   Quand un vote est en cours, on ajoute la classe "active" en JS
+   Le texte (compte a rebours) devient gros et lumineux */
+.info.active {
+  color: #00f0ff;
+  font-weight: 700;
+  font-size: 1.4rem;
+}
+
+/* ===== CONTENEUR DES 3 BOUTONS =====
+   Les boutons sont places cote a cote en ligne
+   
+   display: flex → en ligne par defaut (pas besoin de flex-direction)
+   gap: 15px → 15px d'espace entre chaque bouton
+   width: 100% → prend toute la largeur du conteneur parent */
 .buttons {
   display: flex;
   gap: 15px;
+  width: 100%;
   justify-content: center;
-  margin-bottom: 20px;
 }
 
-button {
-  border: none;
-  border-radius: 12px;
-  padding: 20px 30px;
-  font-size: 1.5rem;
+/* ===== STYLE COMMUN DES 3 BOUTONS DE VOTE =====
+   
+   flex: 1 → chaque bouton prend une part egale de l'espace
+     3 boutons avec flex:1 = chacun fait 1/3 de la largeur
+   
+   border: 2px solid transparent → bordure de 2px invisible par defaut
+     Sera remplacee par une couleur selon le bouton (A, B ou C)
+   
+   border-radius: 16px → coins arrondis (16px = bien arrondi sans etre rond)
+   padding: 25px 10px → grand espace vertical pour un gros bouton tactile
+   cursor: pointer → curseur en forme de main au survol (utile sur PC)
+   
+   display: flex + flex-direction: column → empile l'icone au-dessus du label
+   align-items: center → centre l'icone et le label horizontalement
+   gap: 8px → espace entre l'icone (fleche) et le label (texte)
+   
+   transition: all 0.2s ease → anime tous les changements de proprietes
+     sur 0.2 secondes avec une courbe fluide (ease)
+     Exemple : quand l'opacite change de 1 a 0.3, ca fait un fondu de 0.2s
+     au lieu d'un changement brutal
+   
+   background: rgba(255, 255, 255, 0.05) → blanc a 5% d'opacite
+     Effet vitre/verre depoli sur fond sombre */
+.vote-btn {
+  flex: 1;
+  border: 2px solid transparent;
+  border-radius: 16px;
+  padding: 25px 10px;
   cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.2s ease;
+  background: rgba(255, 255, 255, 0.05);
 }
 
-#btnA {
-  background: #00bcd4;
-  color: white;
+/* ===== ICONE DU BOUTON (la fleche ← ↑ →) ===== */
+.btn-icon {
+  font-size: 2rem;
+  font-weight: 700;
 }
 
-#btnB {
-  background: #e91e63;
-  color: white;
+/* ===== LABEL DU BOUTON (texte sous la fleche) =====
+   
+   text-transform: uppercase → force tout en majuscules
+     Exemple : "Gauche" devient "GAUCHE" a l'affichage */
+.btn-label {
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 1px;
+  text-transform: uppercase;
 }
 
-#btnC {
-  background: #ffeb3b;
-  color: black;
+/* ===== COULEUR BOUTON A - CYAN (Gauche) ===== */
+.btn-a {
+  color: #00bcd4;
+  border-color: rgba(0, 188, 212, 0.3);
 }
 
-.reset {
-  background: #444;
-  color: white;
+/* ===== COULEUR BOUTON B - VIOLET (Tout droit) ===== */
+.btn-b {
+  color: #bb86fc;
+  border-color: rgba(187, 134, 252, 0.3);
+}
+
+/* ===== COULEUR BOUTON C - ORANGE (Droite) ===== */
+.btn-c {
+  color: #ff9800;
+  border-color: rgba(255, 152, 0, 0.3);
+}
+
+/* ===== BOUTON DESACTIVE =====
+   :disabled → cible les boutons qui ont l'attribut HTML "disabled"
+   Quand aucun vote n'est en cours, les boutons sont inutilisables
+   
+   opacity: 0.3 → 30% visible (presque transparent)
+     0 = invisible, 1 = totalement visible
+   cursor: not-allowed → curseur cercle barre (interdit) */
+.vote-btn:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+/* ===== EFFET AU TOUCHER =====
+   :not(:disabled) → seulement si le bouton N'EST PAS desactive
+   :active → au moment ou le doigt/clic est enfonce
+   
+   transform: scale(0.95) → retrecit le bouton a 95% de sa taille
+     Ca donne un effet d'enfoncement quand on appuie
+     scale(1) = taille normale, scale(2) = double, scale(0.5) = moitie */
+.vote-btn:not(:disabled):active {
+  transform: scale(0.95);
+}
+
+/* ===== LUEUR AUTOUR DES BOUTONS ACTIFS =====
+   box-shadow: decalageX decalageY flou couleur
+     0 0 15px → pas de decalage, flou de 15px = halo lumineux
+     Meme principe que text-shadow mais pour les boites
+   :not(:disabled) → seulement quand le bouton est cliquable */
+.btn-a:not(:disabled) {
+  box-shadow: 0 0 15px rgba(0, 188, 212, 0.2);
+}
+
+.btn-b:not(:disabled) {
+  box-shadow: 0 0 15px rgba(187, 134, 252, 0.2);
+}
+
+.btn-c:not(:disabled) {
+  box-shadow: 0 0 15px rgba(255, 152, 0, 0.2);
+}
+
+/* ===== BOUTON APRES AVOIR VOTE =====
+   La classe "voted" est ajoutee par le JS quand le joueur a vote
+   Tous les boutons deviennent gris pour montrer que c'est fait */
+.vote-btn.voted {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* ===== MESSAGE DE CONFIRMATION ("Vote enregistre !") =====
+   Bandeau vert qui apparait apres avoir vote */
+.feedback {
+  padding: 10px 20px;
+  border-radius: 12px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  background: rgba(0, 255, 100, 0.1);
+  color: #00ff64;
+  border: 1px solid rgba(0, 255, 100, 0.2);
+}
+
+/* ===== CLASSE POUR CACHER UN ELEMENT =====
+   visibility: hidden → rend l'element invisible MAIS garde son espace
+     Contrairement a display:none qui supprime l'espace et fait "sauter" la page
+     Exemple : un bouton en visibility:hidden laisse un trou a sa place
+               un bouton en display:none disparait completement */
+.hidden {
+  visibility: hidden;
 }
