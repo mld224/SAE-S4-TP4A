@@ -12,6 +12,8 @@ public class VoteManager : MonoBehaviour
     private float timer;
     private bool isVoting = true;
 
+    public PlayerController player;
+
     void Start()
     {
         StartVote();
@@ -53,7 +55,8 @@ public class VoteManager : MonoBehaviour
 
         Debug.Log("Vote terminé -> " + result);
 
-        // reset serveur
+        ApplyDecision(result);
+
         ws.SendReset();
 
         Invoke(nameof(StartVote), 3f);
@@ -64,5 +67,17 @@ public class VoteManager : MonoBehaviour
         if (A >= B && A >= C) return "A";
         if (B >= A && B >= C) return "B";
         return "C";
+    }
+
+    void ApplyDecision(string result)
+    {
+        if (result == "A")
+            player.MoveLeft();
+
+        else if (result == "B")
+            player.MoveForward();
+
+        else if (result == "C")
+            player.MoveRight();
     }
 }
