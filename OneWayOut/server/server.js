@@ -112,27 +112,7 @@ function broadcast(message) {
   });
 }
 
-/* ===== EVENEMENT : UN TELEPHONE SE CONNECTE =====  */
-wss.on('connection', (ws) => {
-  clients.add(ws);
-  console.log(`Joueur connecte ! Total: ${clients.size}`);
 
-  /* Quand ce telephone envoie un message (un vote) */
-  ws.on('message', (message) => {
-    const data = message.toString();
-
-    if (voteOuvert && ['A', 'B', 'C'].includes(data)) {
-      votes[data]++;
-      console.log(`Vote recu: ${data} | A:${votes.A} B:${votes.B} C:${votes.C}`);
-    }
-  });
-
-  /* Quand ce telephone se deconnecte */
-  ws.on('close', () => {
-    clients.delete(ws);
-    console.log(`Joueur deconnecte. Total: ${clients.size}`);
-  });
-});
 
 /* ===== FONCTION : LANCER UN VOTE ===== */
 function lancerVote(duree = 10) {
