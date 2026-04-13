@@ -20,6 +20,19 @@ public class VoteManager : MonoBehaviour
     /* Reference vers le joueur (le vehicule) */
     public PlayerController player;
 
+    void Start()
+    {
+        /* Lance un premier vote 3 secondes apres le demarrage
+           puis relance un vote 5 secondes apres chaque resultat
+           C'est temporaire, a remplacer par la detection d'embranchement */
+        Invoke(nameof(LancerVoteAuto), 3f);
+    }
+
+    void LancerVoteAuto()
+    {
+        LancerVote(10);
+    }
+
     void Update()
     {
         /* Si un vote est en cours, on decremente le timer
@@ -88,5 +101,7 @@ public class VoteManager : MonoBehaviour
     {
         resultText.text = "";
         timerText.text = "";
+        /* Relance un vote 5 secondes apres le resultat (temporaire) */
+        Invoke(nameof(LancerVoteAuto), 5f);
     }
 }
