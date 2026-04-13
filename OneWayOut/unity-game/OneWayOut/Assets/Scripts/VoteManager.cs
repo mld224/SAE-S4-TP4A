@@ -3,40 +3,21 @@ using TMPro;
 
 public class VoteManager : MonoBehaviour
 {
-    /* Reference vers le WebSocketClient pour envoyer START_VOTE */
     public WebSocketClient ws;
-
-    /* Textes UI */
     public TMP_Text timerText;
     public TMP_Text resultText;
+    public PlayerController player;
+    public HealthManager health;
 
-    /* Duree du vote en secondes */
     public float voteDuration = 10f;
     private float timer;
-
-    /* true = un vote est en cours, false = le vehicule roule */
     private bool isVoting = false;
 
-    /* Reference vers le joueur (le vehicule) */
-    public PlayerController player;
-
-    void Start()
-    {
-        /* Lance un premier vote 3 secondes apres le demarrage
-           puis relance un vote 5 secondes apres chaque resultat
-           C'est temporaire, a remplacer par la detection d'embranchement */
-        Invoke(nameof(LancerVoteAuto), 3f);
-    }
-
-    void LancerVoteAuto()
-    {
-        LancerVote(10);
-    }
+    /* L'embranchement qui a declenche le vote en cours */
+    private Embranchement currentEmbranchement;
 
     void Update()
     {
-        /* Si un vote est en cours, on decremente le timer
-           et on l'affiche a l'ecran */
         if (isVoting)
         {
             timer -= Time.deltaTime;
@@ -49,28 +30,21 @@ public class VoteManager : MonoBehaviour
         }
     }
 
-    /* Appelee quand le vehicule arrive a un embranchement
-       C'est cette fonction que tu appelleras depuis ton code de niveau
-       Exemple : quand le vehicule entre dans une zone de vote,
-       tu fais voteManager.LancerVote() */
-    public void LancerVote(int duree = 10)
+    /* Appele par Embranchement quand le vehicule entre dans la zone */
+    public void LancerVote(int duree, Embranchement embranchement)
     {
+        currentEmbranchement = embranchement;
         voteDuration = duree;
         timer = duree;
         isVoting = true;
         resultText.text = "";
         timerText.text = "Vote : " + duree;
 
-        /* On demande au serveur de lancer le vote
-           Le serveur va broadcast "vote_start" aux telephones */
         ws.DemanderVote(duree);
-
         Debug.Log("Vote lance pour " + duree + " secondes");
     }
 
-    /* Appelee par WebSocketClient quand le serveur envoie "vote_result"
-       resultat = "A", "B" ou "C" (le choix gagnant)
-       details = le nombre de votes pour chaque choix */
+    /* Appele par WebSocketClient quand le serveur envoie vote_result */
     public void OnVoteResult(string resultat, VotesData details)
     {
         isVoting = false;
@@ -78,30 +52,28 @@ public class VoteManager : MonoBehaviour
         resultText.text = "Resultat : " + resultat
             + " (A:" + details.A + " B:" + details.B + " C:" + details.C + ")";
 
-        Debug.Log("Vote termine -> " + resultat);
+        /* Gestion de la vie : bon ou mauvais choix */
+        if (currentEmbranchement != null && health != null)
+        {
+            if (resultat == currentEmbranchement.bonChoix)
+                health.BonChoix();
+            else
+                health.MauvaisChoix();
 
-        /* On bouge le vehicule selon le resultat */
-        ApplyDecision(resultat);
+            /* On donne le chemin choisi au vehicule */
+            var chemin = currentEmbranchement.GetChemin(resultat);
+            player.SuivreChemin(chemin);
+        }
 
-        /* On efface le texte apres 3 secondes */
+        /* On remet le vehicule en mouvement */
+        player.canMove = true;
+
         Invoke(nameof(ClearResult), 3f);
-    }
-
-    void ApplyDecision(string result)
-    {
-        if (result == "A")
-            player.MoveLeft();
-        else if (result == "B")
-            player.MoveForward();
-        else if (result == "C")
-            player.MoveRight();
     }
 
     void ClearResult()
     {
         resultText.text = "";
         timerText.text = "";
-        /* Relance un vote 5 secondes apres le resultat (temporaire) */
-        Invoke(nameof(LancerVoteAuto), 5f);
     }
 }
