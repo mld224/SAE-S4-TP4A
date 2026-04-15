@@ -10,13 +10,12 @@ public class HealthManager : MonoBehaviour
     public float malusVie = 15f;
     public Slider barreDeVie;
 
-    /* Reference vers le SpriteRenderer du vehicule */
-    public SpriteRenderer vehiculeRenderer;
+    public GameOverManager gameOverManager;
 
-    /* Tableau de sprites : du plus petit au plus grand
-       Element 0 = petit (mauvais etat)
-       Element 1 = moyen (etat normal)
-       Element 2 = grand (bon etat) */
+    /* Reference vers VoteManager pour savoir si un vote est en cours */
+    public VoteManager voteManager;
+
+    public SpriteRenderer vehiculeRenderer;
     public Sprite[] vaisseauSprites;
 
     void Start()
@@ -27,6 +26,15 @@ public class HealthManager : MonoBehaviour
 
     void Update()
     {
+        /* La vie ne baisse PAS pendant un vote */
+        if (voteManager != null && voteManager.isVoting)
+        {
+            /* On met juste a jour la barre */
+            if (barreDeVie != null)
+                barreDeVie.value = vieCourante / vieMax;
+            return;
+        }
+
         vieCourante -= pertesParSeconde * Time.deltaTime;
         vieCourante = Mathf.Clamp(vieCourante, 0, vieMax);
 
@@ -69,7 +77,9 @@ public class HealthManager : MonoBehaviour
 
     void GameOver()
     {
-        Time.timeScale = 0;
-        Debug.Log("GAME OVER");
+        if (gameOverManager != null)
+            gameOverManager.DeclencherGameOver();
+        else
+            Time.timeScale = 0;
     }
 }

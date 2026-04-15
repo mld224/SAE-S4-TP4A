@@ -11,10 +11,17 @@ public class VoteManager : MonoBehaviour
 
     public float voteDuration = 10f;
     private float timer;
-    private bool isVoting = false;
 
-    /* L'embranchement qui a declenche le vote en cours */
+    /* Public pour que d'autres scripts puissent verifier l'etat du vote
+       (ex: HealthManager pour ne pas baisser la vie pendant le vote) */
+    public bool isVoting = false;
+
     private Embranchement currentEmbranchement;
+    public ScoreManager scoreManager;
+
+    /* Reference vers le decor actuellement affiche
+       Permet de le detruire avant d'en instancier un nouveau */
+    private GameObject decorActuel;
 
     void Update()
     {
@@ -30,7 +37,6 @@ public class VoteManager : MonoBehaviour
         }
     }
 
-    /* Appele par Embranchement quand le vehicule entre dans la zone */
     public void LancerVote(int duree, Embranchement embranchement)
     {
         currentEmbranchement = embranchement;
@@ -44,7 +50,6 @@ public class VoteManager : MonoBehaviour
         Debug.Log("Vote lance pour " + duree + " secondes");
     }
 
-    /* Appele par WebSocketClient quand le serveur envoie vote_result */
     public void OnVoteResult(string resultat, VotesData details)
     {
         isVoting = false;
@@ -56,20 +61,27 @@ public class VoteManager : MonoBehaviour
         {
             if (resultat == currentEmbranchement.bonChoix)
                 health.BonChoix();
+            if (scoreManager != null && resultat == currentEmbranchement.bonChoix)
+                scoreManager.BonChoix();
             else
                 health.MauvaisChoix();
 
-            /* Instancier le decor au milieu du chemin choisi */
+            /* DETRUIRE L'ANCIEN DECOR avant d'en creer un nouveau */
+            if (decorActuel != null)
+            {
+                Destroy(decorActuel);
+            }
+
             GameObject decorPrefab = currentEmbranchement.GetDecorPrefab(resultat);
             var chemin = currentEmbranchement.GetChemin(resultat);
 
             if (decorPrefab != null && chemin.Count >= 4)
             {
-                /* Position au milieu du tunnel : on prend un waypoint vers le milieu de la liste */
                 int indexMilieu = chemin.Count / 2;
                 Vector3 positionDecor = chemin[indexMilieu].position;
-                GameObject decorInstance = Instantiate(decorPrefab, positionDecor, Quaternion.identity);
-                Destroy(decorInstance, 25f);
+                positionDecor.z = 5f;
+                /* On stocke la reference pour pouvoir le detruire plus tard */
+                decorActuel = Instantiate(decorPrefab, positionDecor, Quaternion.identity);
             }
 
             player.SuivreChemin(chemin);
