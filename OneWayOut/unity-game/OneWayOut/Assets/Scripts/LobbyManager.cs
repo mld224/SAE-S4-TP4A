@@ -4,26 +4,28 @@ using TMPro;
 
 public class LobbyManager : MonoBehaviour
 {
-    /* Flag global accessible par les autres scripts
-       pour savoir si le jeu a commence ou si on est encore en lobby */
+    /* Flag global : le jeu a-t-il commence ? */
     public static bool GameStarted = false;
 
-    /* Panel du lobby (cache apres le lancement) */
+    /* UI du lobby */
     public GameObject lobbyPanel;
-
-    /* Texte du nombre de joueurs connectes */
     public TMP_Text playerCountText;
-
-    /* Bouton pour lancer la partie (cliquable par le presenteur) */
     public Button startButton;
 
-    /* References vers les managers du jeu a demarrer */
+    /* References vers les autres managers */
     public LevelGenerator levelGenerator;
     public WebSocketClient ws;
 
+    /* ===== SONS =====
+       musiqueSource : AudioSource dedie a la musique (Loop = true)
+       effetsSource : AudioSource pour les effets ponctuels (Loop = false)
+       musiqueFond : glisse SpaceshipMusic.mp3 (musique en boucle pendant tout le jeu) */
+    public AudioSource musiqueSource;
+    public AudioSource effetsSource;
+    public AudioClip musiqueFond;
+
     void Start()
     {
-        /* Remise a zero au demarrage ou apres un Recommencer */
         GameStarted = false;
 
         if (lobbyPanel != null)
@@ -32,12 +34,21 @@ public class LobbyManager : MonoBehaviour
         if (playerCountText != null)
             playerCountText.text = "0 joueur connecte";
 
-        /* On branche le bouton sur StartGame() */
         if (startButton != null)
             startButton.onClick.AddListener(StartGame);
+
+        /* Lance la musique de fond en boucle des le lobby
+           Elle continuera pendant toute la partie */
+        if (musiqueSource != null && musiqueFond != null)
+        {
+            musiqueSource.clip = musiqueFond;
+            musiqueSource.loop = true;
+            musiqueSource.volume = 0.3f;  /* volume bas pour ne pas couvrir les effets */
+            musiqueSource.Play();
+        }
     }
 
-    /* Appele par WebSocketClient quand le serveur envoie player_count */
+    /* ===== MISE A JOUR DU COMPTEUR DE JOUEURS ===== */
     public void UpdatePlayerCount(int count)
     {
         if (playerCountText != null)
@@ -47,7 +58,7 @@ public class LobbyManager : MonoBehaviour
         }
     }
 
-    /* Appele par le bouton "Commencer la partie" */
+    /* ===== LANCEMENT DE LA PARTIE ===== */
     public void StartGame()
     {
         GameStarted = true;
@@ -55,12 +66,12 @@ public class LobbyManager : MonoBehaviour
         if (lobbyPanel != null)
             lobbyPanel.SetActive(false);
 
-        /* Lance la generation des waypoints et embranchements */
         if (levelGenerator != null)
             levelGenerator.StartGeneration();
 
-        /* Previent les tels que le jeu a commence */
         if (ws != null)
             ws.SendGameStart();
+
+        /* La musique continue de tourner en boucle pendant le jeu */
     }
 }

@@ -8,14 +8,17 @@ public class CameraFollow : MonoBehaviour
 
     void LateUpdate()
     {
-        /* La camera suit le vaisseau UNIQUEMENT en Y
-           En X elle reste fixe a 0 (au centre de la map)
-           Comme ca le vaisseau bouge visiblement a gauche/droite */
+        /* Position cible : centre en X (pour voir le vaisseau se deplacer lateralement) */
         Vector3 targetPosition = new Vector3(
-            0f,                           /* X fixe au centre */
-            target.position.y + offset.y, /* Y suit le vaisseau */
-            offset.z                       /* Z fixe (camera) */
+            0f,
+            target.position.y + offset.y,
+            offset.z
         );
+
+        /* Si CameraShake est actif, on ajoute son offset
+           Ca fait trembler la camera sans casser le suivi */
+        if (CameraShake.Instance != null)
+            targetPosition += CameraShake.Instance.shakeOffset;
 
         transform.position = Vector3.Lerp(
             transform.position,
@@ -24,3 +27,4 @@ public class CameraFollow : MonoBehaviour
         );
     }
 }
+
