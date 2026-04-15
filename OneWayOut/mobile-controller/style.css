@@ -314,3 +314,29 @@ body {
 .hidden {
   visibility: hidden;
 }
+
+/* ===== BOUTON RECOMMENCER =====
+   Affiche en grand rouge quand le jeu est en Game Over
+   Tous les joueurs peuvent cliquer, un seul clic suffit a relancer */
+.restart-btn {
+  padding: 20px 40px;
+  border: none;
+  border-radius: 12px;
+  font-size: 1.3rem;
+  font-weight: 800;
+  letter-spacing: 3px;
+  cursor: pointer;
+  background: linear-gradient(180deg, #ff4444 0%, #aa0000 100%);
+  color: white;
+  text-transform: uppercase;
+  box-shadow:
+    0 0 20px rgba(255, 68, 68, 0.5),
+    0 4px 10px rgba(0, 0, 0, 0.3);
+  transition: all 0.2s ease;
+  width: 100%;
+}
+
+.restart-btn:active {
+  transform: scale(0.95);
+  box-shadow: 0 0 30px rgba(255, 68, 68, 0.8);
+}

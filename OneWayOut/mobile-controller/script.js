@@ -5,6 +5,7 @@ const feedbackDiv = document.getElementById("feedback");
 const btnA = document.getElementById("btnA");
 const btnB = document.getElementById("btnB");
 const btnC = document.getElementById("btnC");
+const btnRestart = document.getElementById("btnRestart");
 
 const allButtons = [btnA, btnB, btnC];
 
@@ -39,6 +40,16 @@ socket.addEventListener("message", (event) => {
 
   if (data.type === "vote_result") {
     finVote(data.resultat);
+  }
+
+  /* Le jeu est termine → on affiche le bouton Recommencer */
+  if (data.type === "game_over") {
+    afficherGameOver();
+  }
+
+  /* Un joueur a relance la partie → on cache le bouton et on reset */
+  if (data.type === "restart") {
+    resetApresRestart();
   }
 });
 
@@ -83,9 +94,35 @@ function desactiverBoutons() {
   });
 }
 
+/* ===== GAME OVER =====
+   Affiche le bouton Recommencer et desactive les boutons de vote */
+function afficherGameOver() {
+  clearInterval(countdownInterval);
+  desactiverBoutons();
+  infoDiv.textContent = "GAME OVER";
+  infoDiv.classList.remove("active");
+  feedbackDiv.classList.add("hidden");
+  btnRestart.classList.remove("hidden");
+}
+
+/* ===== RESET APRES RESTART =====
+   Un joueur a relance la partie, on remet tout a zero */
+function resetApresRestart() {
+  btnRestart.classList.add("hidden");
+  infoDiv.textContent = "En attente du prochain vote...";
+  feedbackDiv.classList.add("hidden");
+  aDejaVote = false;
+}
+
 btnA.addEventListener("click", () => envoyerVote("A"));
 btnB.addEventListener("click", () => envoyerVote("B"));
 btnC.addEventListener("click", () => envoyerVote("C"));
+
+/* Clic sur Recommencer : envoie RESTART au serveur
+   qui va broadcast la commande a Unity et aux autres tel */
+btnRestart.addEventListener("click", () => {
+  socket.send("RESTART");
+});
 
 function envoyerVote(choix) {
   if (aDejaVote) return;

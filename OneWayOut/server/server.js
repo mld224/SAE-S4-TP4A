@@ -18,64 +18,21 @@ const fs = require('fs');
 const path = require('path');
 const WebSocket = require('ws');
 
-/* ===== CONFIGURATION =====
-   PORT → le port unique pour tout (site web + WebSocket)
-   
-   MOBILE_DIR → chemin vers le dossier mobile-controller
-     __dirname → variable speciale de Node.js, c'est le dossier ou se trouve CE fichier
-     path.join(__dirname, '..', 'mobile-controller') → remonte d'un dossier (..)
-     puis entre dans mobile-controller
-     Resultat : OneWayOut/server/../mobile-controller = OneWayOut/mobile-controller */
 const PORT = 8080;
 const MOBILE_DIR = path.join(__dirname, '..', 'mobile-controller');
 
-/* ===== TABLE DES TYPES MIME =====
-   Quand le navigateur recoit un fichier, il a besoin de savoir ce que c'est
-   Le serveur lui dit via le "Content-Type" (type MIME)
-   
-   Sans ca, le navigateur recoit style.css mais ne sait pas que c'est du CSS
-   et il ne l'applique pas
-   
-   .html → text/html (page web)
-   .css  → text/css (feuille de style)
-   .js   → text/javascript (script) */
 const MIME_TYPES = {
   '.html': 'text/html',
   '.css': 'text/css',
   '.js': 'text/javascript'
 };
 
-/* ===== CREATION DU SERVEUR HTTP =====
-   http.createServer(callback) → cree un serveur web
-   Le callback est appele A CHAQUE FOIS qu'un navigateur fait une requete
-   
-   req → la requete du navigateur (quelle page il demande)
-     req.url → l'URL demandee, ex: "/" ou "/style.css" ou "/script.js"
-   
-   res → la reponse qu'on renvoie au navigateur
-     res.writeHead(code, headers) → envoie le code HTTP + les entetes
-       200 = OK (tout va bien)
-       404 = Not Found (fichier pas trouve)
-     res.end(contenu) → envoie le contenu et ferme la reponse */
 const httpServer = http.createServer((req, res) => {
-
-  /* Si le navigateur demande "/" (la racine), on lui sert index.html
-     Sinon on sert le fichier demande (ex: "/style.css" → style.css) */
   let fichier = req.url === '/' ? '/index.html' : req.url;
-
-  /* On construit le chemin complet vers le fichier sur le disque dur
-     Exemple : MOBILE_DIR + "/style.css" → "OneWayOut/mobile-controller/style.css" */
   const cheminFichier = path.join(MOBILE_DIR, fichier);
-
-  /* path.extname() → recupere l'extension du fichier
-     Exemple : path.extname("style.css") → ".css"
-     On cherche le type MIME correspondant, ou "text/plain" par defaut */
   const extension = path.extname(cheminFichier);
   const typeMime = MIME_TYPES[extension] || 'text/plain';
 
-  /* fs.readFile() → lit le contenu du fichier de maniere asynchrone
-     Si erreur (fichier pas trouve) → on renvoie 404
-     Sinon → on renvoie le contenu avec le bon type MIME */
   fs.readFile(cheminFichier, (erreur, contenu) => {
     if (erreur) {
       res.writeHead(404);
@@ -87,23 +44,12 @@ const httpServer = http.createServer((req, res) => {
   });
 });
 
-/* ===== CREATION DU SERVEUR WEBSOCKET =====
-   On attache le WebSocket au serveur HTTP existant avec { server: httpServer }
-   Ca veut dire que les 2 partagent le meme port (8080)
-   
-   Le navigateur fait d'abord une requete HTTP classique, puis "upgrade"
-   la connexion en WebSocket. Le serveur HTTP detecte ca et passe la main
-   au serveur WebSocket automatiquement */
 const wss = new WebSocket.Server({ server: httpServer });
 
-/* ===== STOCKAGE DES VOTES ===== */
 let votes = { A: 0, B: 0, C: 0 };
 let voteOuvert = false;
 const clients = new Set();
 
-/* ===== FONCTION : ENVOYER UN MESSAGE A TOUS LES CLIENTS =====
-   Parcourt tous les clients connectes et envoie le message
-   On verifie que le client est toujours connecte (OPEN) avant d'envoyer */
 function broadcast(message) {
   clients.forEach((client) => {
     if (client.readyState === WebSocket.OPEN) {
@@ -112,9 +58,6 @@ function broadcast(message) {
   });
 }
 
-
-
-/* ===== FONCTION : LANCER UN VOTE ===== */
 function lancerVote(duree = 10) {
   votes = { A: 0, B: 0, C: 0 };
   voteOuvert = true;
@@ -129,13 +72,6 @@ function lancerVote(duree = 10) {
   }, duree * 1000);
 }
 
-/* ===== DEMARRAGE DU SERVEUR =====
-   httpServer.listen(PORT) → le serveur commence a ecouter sur le port 8080
-   A partir de ce moment :
-     - http://adresse:8080 → sert les fichiers HTML/CSS/JS
-     - ws://adresse:8080   → accepte les connexions WebSocket
-   Tout sur le meme port */
-/* ===== EVENEMENT : UN CLIENT SE CONNECTE =====  */
 wss.on('connection', (ws) => {
   clients.add(ws);
   console.log(`Joueur connecte ! Total: ${clients.size}`);
@@ -143,21 +79,29 @@ wss.on('connection', (ws) => {
   ws.on('message', (message) => {
     const data = message.toString();
 
-    /* Si c'est Unity qui demande de lancer un vote
-       Le message peut contenir une duree : "START_VOTE:8"
-       Ou juste "START_VOTE" (10 secondes par defaut)
-       
-       split(":") coupe la chaine au niveau des ":"
-       Exemple : "START_VOTE:8".split(":") → ["START_VOTE", "8"]
-       parseInt convertit "8" en nombre 8
-       || 10 → si pas de duree specifiee, 10 par defaut */
+    /* Unity demande de lancer un vote (ex: "START_VOTE:8") */
     if (data.startsWith("START_VOTE")) {
       const parts = data.split(":");
       const duree = parseInt(parts[1]) || 10;
       lancerVote(duree);
     }
 
-    /* Si c'est un vote d'un telephone (A, B ou C) */
+    /* Unity informe qu'il y a eu un Game Over
+       → on previent tous les tel d'afficher le bouton Recommencer */
+    if (data === "GAME_OVER") {
+      voteOuvert = false;
+      broadcast(JSON.stringify({ type: 'game_over' }));
+      console.log("Game Over recu, bouton Recommencer affiche sur les tels");
+    }
+
+    /* Un tel demande de redemarrer la partie
+       → on previent tous les clients (autres tel + Unity) */
+    if (data === "RESTART") {
+      broadcast(JSON.stringify({ type: 'restart' }));
+      console.log("Restart demande par un joueur, partie relancee");
+    }
+
+    /* Vote classique d'un tel (A, B, C) */
     if (voteOuvert && ['A', 'B', 'C'].includes(data)) {
       votes[data]++;
       console.log(`Vote recu: ${data} | A:${votes.A} B:${votes.B} C:${votes.C}`);
@@ -170,7 +114,6 @@ wss.on('connection', (ws) => {
   });
 });
 
-/* ===== DEMARRAGE DU SERVEUR ===== */
 httpServer.listen(PORT, () => {
   console.log(`Serveur demarre sur le port ${PORT}`);
   console.log(`Interface mobile : http://localhost:${PORT}`);

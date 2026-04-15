@@ -2,7 +2,6 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8" />
-  <!-- Empeche le zoom sur mobile et force la largeur a celle de l'ecran -->
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
   <title>One Way Out - Controller</title>
   <link rel="stylesheet" href="style.css" />
@@ -11,16 +10,12 @@
 
   <div class="container">
 
-    <!-- Titre du jeu avec style neon -->
     <h1 class="title">ONE WAY OUT</h1>
 
-    <!-- Indicateur de connexion au serveur -->
     <div id="status" class="status disconnected">Connexion en cours...</div>
 
-    <!-- Zone d'info : affiche "En attente..." ou le compte a rebours -->
     <div id="info" class="info">En attente du prochain vote...</div>
 
-    <!-- Les 3 boutons de vote -->
     <div class="buttons">
       <button id="btnA" class="vote-btn btn-a" disabled>
         <span class="btn-icon">←</span>
@@ -38,8 +33,10 @@
       </button>
     </div>
 
-    <!-- Message de confirmation apres un vote -->
     <div id="feedback" class="feedback hidden">Vote enregistre !</div>
+
+    <!-- Bouton Recommencer : visible uniquement en Game Over -->
+    <button id="btnRestart" class="restart-btn hidden">RECOMMENCER</button>
 
   </div>
 
