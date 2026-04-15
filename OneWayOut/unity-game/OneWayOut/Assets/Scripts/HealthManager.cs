@@ -50,6 +50,8 @@ void Start()
 
 void Update()
 {
+    if (!LobbyManager.GameStarted) return;
+
     /* La vie ne baisse pas pendant un vote */
     if (voteManager != null && voteManager.isVoting)
     {

@@ -32,6 +32,8 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
+        if (!LobbyManager.GameStarted) return;
+
         /* Si le vaisseau est arrete (ex: pendant un vote), on ne bouge pas */
         if (!canMove) return;
 

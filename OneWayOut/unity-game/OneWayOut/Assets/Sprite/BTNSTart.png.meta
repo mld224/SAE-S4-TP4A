@@ -1,0 +1,920 @@
+fileFormatVersion: 2
+guid: 8db793bc323d7f14695228915da89cb0
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: 1266368783609926215
+    second: BTNSTart_0
+  - first:
+      213: -705674733333712
+    second: BTNSTart_1
+  - first:
+      213: 7308043726537638555
+    second: BTNSTart_2
+  - first:
+      213: -9058111338265203308
+    second: BTNSTart_3
+  - first:
+      213: -6647100006295242807
+    second: BTNSTart_4
+  - first:
+      213: 8317322112475359215
+    second: BTNSTart_5
+  - first:
+      213: -6818674013881209286
+    second: BTNSTart_6
+  - first:
+      213: 8705278562758050030
+    second: BTNSTart_7
+  - first:
+      213: -6815722667879254048
+    second: BTNSTart_8
+  - first:
+      213: 3909515736070790056
+    second: BTNSTart_9
+  - first:
+      213: 1016495499608879022
+    second: BTNSTart_10
+  - first:
+      213: -4250378803613780864
+    second: BTNSTart_11
+  - first:
+      213: -4674031718535516342
+    second: BTNSTart_12
+  - first:
+      213: 6963854689661782196
+    second: BTNSTart_13
+  - first:
+      213: 4271004387517081996
+    second: BTNSTart_14
+  - first:
+      213: 4826257865153963761
+    second: BTNSTart_15
+  - first:
+      213: -6681386774343264712
+    second: BTNSTart_16
+  - first:
+      213: 7045711672360078921
+    second: BTNSTart_17
+  - first:
+      213: -1723644067844288030
+    second: BTNSTart_18
+  - first:
+      213: 2156937267002412561
+    second: BTNSTart_19
+  - first:
+      213: 4104338648128806224
+    second: BTNSTart_20
+  - first:
+      213: -1995206533317159027
+    second: BTNSTart_21
+  - first:
+      213: -5940981339595501081
+    second: BTNSTart_22
+  - first:
+      213: 1021620527115863009
+    second: BTNSTart_23
+  - first:
+      213: 9001607655383014268
+    second: BTNSTart_24
+  - first:
+      213: 5831840809664035922
+    second: BTNSTart_25
+  - first:
+      213: -8609087083079716905
+    second: BTNSTart_26
+  - first:
+      213: 8684284207401934382
+    second: BTNSTart_27
+  - first:
+      213: 6164969577645498758
+    second: BTNSTart_28
+  - first:
+      213: -6967749417947612688
+    second: BTNSTart_29
+  - first:
+      213: -3042224288940040349
+    second: BTNSTart_30
+  - first:
+      213: 8904562247327967632
+    second: BTNSTart_31
+  - first:
+      213: 6002811411042518997
+    second: BTNSTart_32
+  - first:
+      213: -87959651935027913
+    second: BTNSTart_33
+  - first:
+      213: -8021606962966439607
+    second: BTNSTart_34
+  - first:
+      213: -7012163388451503822
+    second: BTNSTart_35
+  - first:
+      213: 6691505731053139606
+    second: BTNSTart_36
+  - first:
+      213: -193282563866810427
+    second: BTNSTart_37
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: BTNSTart_0
+      rect:
+        serializedVersion: 2
+        x: 399
+        y: 434
+        width: 681
+        height: 243
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 74296bdf2bb039110800000000000000
+      internalID: 1266368783609926215
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BTNSTart_1
+      rect:
+        serializedVersion: 2
+        x: 81
+        y: 95
+        width: 8
+        height: 7
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 033513c413e7dfff0800000000000000
+      internalID: -705674733333712
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BTNSTart_2
+      rect:
+        serializedVersion: 2
+        x: 82
+        y: 620
+        width: 7
+        height: 11
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b924c43bc036b6560800000000000000
+      internalID: 7308043726537638555
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BTNSTart_3
+      rect:
+        serializedVersion: 2
+        x: 83
+        y: 487
+        width: 6
+        height: 8
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 49da3c2dabf1b4280800000000000000
+      internalID: -9058111338265203308
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BTNSTart_4
+      rect:
+        serializedVersion: 2
+        x: 83
+        y: 407
+        width: 6
+        height: 8
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9c7764a13c1c0c3a0800000000000000
+      internalID: -6647100006295242807
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BTNSTart_5
+      rect:
+        serializedVersion: 2
+        x: 83
+        y: 70
+        width: 6
+        height: 6
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: fe7689ce4601d6370800000000000000
+      internalID: 8317322112475359215
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BTNSTart_13
+      rect:
+        serializedVersion: 2
+        x: 924
+        y: 644
+        width: 7
+        height: 7
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4b88ab4b1f494a060800000000000000
+      internalID: 6963854689661782196
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BTNSTart_15
+      rect:
+        serializedVersion: 2
+        x: 984
+        y: 641
+        width: 8
+        height: 7
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1f6efee25ff4af240800000000000000
+      internalID: 4826257865153963761
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BTNSTart_16
+      rect:
+        serializedVersion: 2
+        x: 994
+        y: 960
+        width: 7
+        height: 9
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 836d644d022f643a0800000000000000
+      internalID: -6681386774343264712
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BTNSTart_17
+      rect:
+        serializedVersion: 2
+        x: 994
+        y: 200
+        width: 7
+        height: 9
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 94e88dcaf6567c160800000000000000
+      internalID: 7045711672360078921
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BTNSTart_18
+      rect:
+        serializedVersion: 2
+        x: 994
+        y: 147
+        width: 7
+        height: 13
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2e19ee04ad26418e0800000000000000
+      internalID: -1723644067844288030
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BTNSTart_19
+      rect:
+        serializedVersion: 2
+        x: 994
+        y: 104
+        width: 6
+        height: 7
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 11e0b72340bfeed10800000000000000
+      internalID: 2156937267002412561
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BTNSTart_20
+      rect:
+        serializedVersion: 2
+        x: 994
+        y: 24
+        width: 6
+        height: 8
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 05ddf97314a85f830800000000000000
+      internalID: 4104338648128806224
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BTNSTart_21
+      rect:
+        serializedVersion: 2
+        x: 994
+        y: 3
+        width: 7
+        height: 13
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d879710aa3a9f44e0800000000000000
+      internalID: -1995206533317159027
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BTNSTart_22
+      rect:
+        serializedVersion: 2
+        x: 995
+        y: 282
+        width: 6
+        height: 7
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7e19f24c2f46d8da0800000000000000
+      internalID: -5940981339595501081
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BTNSTart_23
+      rect:
+        serializedVersion: 2
+        x: 995
+        y: 234
+        width: 6
+        height: 7
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1e30df5e4768d2e00800000000000000
+      internalID: 1021620527115863009
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BTNSTart_24
+      rect:
+        serializedVersion: 2
+        x: 1019
+        y: 632
+        width: 6
+        height: 6
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c7b9a8258722cec70800000000000000
+      internalID: 9001607655383014268
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BTNSTart_25
+      rect:
+        serializedVersion: 2
+        x: 1041
+        y: 447
+        width: 6
+        height: 7
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 25cb6a6615cdee050800000000000000
+      internalID: 5831840809664035922
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BTNSTart_26
+      rect:
+        serializedVersion: 2
+        x: 1041
+        y: 439
+        width: 7
+        height: 9
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7df21ac29e0668880800000000000000
+      internalID: -8609087083079716905
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BTNSTart_27
+      rect:
+        serializedVersion: 2
+        x: 1041
+        y: 304
+        width: 6
+        height: 6
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e2e1abea976c48870800000000000000
+      internalID: 8684284207401934382
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BTNSTart_28
+      rect:
+        serializedVersion: 2
+        x: 1041
+        y: 135
+        width: 6
+        height: 7
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 68166aeda2f5e8550800000000000000
+      internalID: 6164969577645498758
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BTNSTart_29
+      rect:
+        serializedVersion: 2
+        x: 1041
+        y: 39
+        width: 7
+        height: 13
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0f93c4332d49d4f90800000000000000
+      internalID: -6967749417947612688
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BTNSTart_30
+      rect:
+        serializedVersion: 2
+        x: 1041
+        y: 31
+        width: 6
+        height: 9
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 36fd9aaa029d7c5d0800000000000000
+      internalID: -3042224288940040349
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BTNSTart_31
+      rect:
+        serializedVersion: 2
+        x: 1041
+        y: 0
+        width: 8
+        height: 14
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 09966508f2c539b70800000000000000
+      internalID: 8904562247327967632
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BTNSTart_32
+      rect:
+        serializedVersion: 2
+        x: 1046
+        y: 490
+        width: 8
+        height: 7
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5d7c9d09c254e4350800000000000000
+      internalID: 6002811411042518997
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BTNSTart_33
+      rect:
+        serializedVersion: 2
+        x: 1047
+        y: 514
+        width: 9
+        height: 10
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 73d78df992187cef0800000000000000
+      internalID: -87959651935027913
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BTNSTart_34
+      rect:
+        serializedVersion: 2
+        x: 1049
+        y: 593
+        width: 6
+        height: 7
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 949d59ca7f68da090800000000000000
+      internalID: -8021606962966439607
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BTNSTart_36
+      rect:
+        serializedVersion: 2
+        x: 1065
+        y: 503
+        width: 7
+        height: 7
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 696b9ef52010ddc50800000000000000
+      internalID: 6691505731053139606
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BTNSTart_37
+      rect:
+        serializedVersion: 2
+        x: 1066
+        y: 570
+        width: 7
+        height: 6
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5c7217f3882515df0800000000000000
+      internalID: -193282563866810427
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: f6ef9b10666220a4781d234c0360e7e7
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      BTNSTart_0: 1266368783609926215
+      BTNSTart_1: -705674733333712
+      BTNSTart_10: 1016495499608879022
+      BTNSTart_11: -4250378803613780864
+      BTNSTart_12: -4674031718535516342
+      BTNSTart_13: 6963854689661782196
+      BTNSTart_14: 4271004387517081996
+      BTNSTart_15: 4826257865153963761
+      BTNSTart_16: -6681386774343264712
+      BTNSTart_17: 7045711672360078921
+      BTNSTart_18: -1723644067844288030
+      BTNSTart_19: 2156937267002412561
+      BTNSTart_2: 7308043726537638555
+      BTNSTart_20: 4104338648128806224
+      BTNSTart_21: -1995206533317159027
+      BTNSTart_22: -5940981339595501081
+      BTNSTart_23: 1021620527115863009
+      BTNSTart_24: 9001607655383014268
+      BTNSTart_25: 5831840809664035922
+      BTNSTart_26: -8609087083079716905
+      BTNSTart_27: 8684284207401934382
+      BTNSTart_28: 6164969577645498758
+      BTNSTart_29: -6967749417947612688
+      BTNSTart_3: -9058111338265203308
+      BTNSTart_30: -3042224288940040349
+      BTNSTart_31: 8904562247327967632
+      BTNSTart_32: 6002811411042518997
+      BTNSTart_33: -87959651935027913
+      BTNSTart_34: -8021606962966439607
+      BTNSTart_35: -7012163388451503822
+      BTNSTart_36: 6691505731053139606
+      BTNSTart_37: -193282563866810427
+      BTNSTart_4: -6647100006295242807
+      BTNSTart_5: 8317322112475359215
+      BTNSTart_6: -6818674013881209286
+      BTNSTart_7: 8705278562758050030
+      BTNSTart_8: -6815722667879254048
+      BTNSTart_9: 3909515736070790056
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

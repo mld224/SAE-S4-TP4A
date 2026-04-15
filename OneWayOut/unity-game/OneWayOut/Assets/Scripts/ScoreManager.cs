@@ -32,6 +32,7 @@ public class ScoreManager : MonoBehaviour
 
     void Update()
     {
+        if (!LobbyManager.GameStarted) return;
         /* Pas de score pendant un vote */
         if (voteManager != null && voteManager.isVoting) return;
 

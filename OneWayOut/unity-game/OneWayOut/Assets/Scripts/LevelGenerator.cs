@@ -34,15 +34,20 @@ public class LevelGenerator : MonoBehaviour
     /* Compteur d'embranchements (pour ajuster la difficulte) */
     private int nbEmbranchements = 0;
 
-    void Start()
+    /* Appele par LobbyManager quand le presenteur clique sur "Commencer" */
+    public void StartGeneration()
     {
         prochainY = player.transform.position.y + distanceEntreEmbranchements;
-        /* Segment droit du depart jusqu'au premier embranchement */
         GenererSegmentDroit(player.transform.position.y + 5f, prochainY, 0);
     }
 
     void Update()
     {
+        /* Pas de generation tant que le jeu n'a pas commence */
+        if (!LobbyManager.GameStarted)
+        {
+            return;
+        }
         /* Quand le vaisseau s'approche du prochain point de generation,
            on cree un nouvel embranchement */
         if (player.transform.position.y + distanceGeneration >= prochainY)
