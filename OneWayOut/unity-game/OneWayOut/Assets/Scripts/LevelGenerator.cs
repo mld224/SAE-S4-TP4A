@@ -8,23 +8,28 @@ public class LevelGenerator : MonoBehaviour
     public GameObject decorBonPrefab;
     public GameObject decorMauvaisPrefab;
 
+    /* Distance en Y entre 2 embranchements */
+    public float distanceEntreEmbranchements = 60f;
 
-    public float distanceEntreEmbranchements = 30f;
-    public float ecartLateral = 5f;
-    public float longueurChemin = 10f;
+    /* Decalage lateral des chemins gauche/droite */
+    public float ecartLateral = 6f;
+
+    /* Longueur en Y pendant laquelle on reste sur le cote (tunnel)
+       Plus c'est grand, plus le joueur a le temps de voir le decor */
+    public float longueurTunnel = 25f;
+
+    /* On genere le prochain embranchement quand le vaisseau est a moins
+       de cette distance Y */
+    public float distanceGeneration = 30f;
+
     private float prochainY;
-    public float distanceGeneration = 40f;
-
     private List<GameObject> anciensObjets = new List<GameObject>();
     private int nbEmbranchements = 0;
-
-    /* Position X du dernier chemin pris (pour generer le prochain segment droit) */
-    private float dernierX = 0f;
 
     void Start()
     {
         prochainY = player.transform.position.y + distanceEntreEmbranchements;
-        /* Le segment droit va JUSQU'A l'embranchement (pas -5) */
+        /* Segment droit du depart jusqu'au premier embranchement */
         GenererSegmentDroit(player.transform.position.y + 5f, prochainY, 0);
     }
 
@@ -45,7 +50,7 @@ public class LevelGenerator : MonoBehaviour
 
         for (float y = startY; y <= endY; y += 5f)
         {
-            GameObject wp = new GameObject("WP_" + y);
+            GameObject wp = new GameObject("WP_droit_" + y);
             wp.transform.position = new Vector3(posX, y, 0);
             waypoints.Add(wp.transform);
             anciensObjets.Add(wp);
@@ -56,7 +61,6 @@ public class LevelGenerator : MonoBehaviour
 
     void GenererEmbranchement(float posY)
     {
-        /* L'embranchement est TOUJOURS au centre maintenant */
         GameObject embObj = new GameObject("Embranchement_" + nbEmbranchements);
         embObj.transform.position = new Vector3(0, posY, 0);
 
@@ -68,57 +72,73 @@ public class LevelGenerator : MonoBehaviour
         emb.voteManager = voteManager;
         emb.player = player;
         emb.voteDuration = Mathf.Max(3, 10 - nbEmbranchements);
-
-        /* On passe les prefabs de decor a l'embranchement */
         emb.decorBonPrefab = decorBonPrefab;
         emb.decorMauvaisPrefab = decorMauvaisPrefab;
 
         string[] choix = { "A", "B", "C" };
         emb.bonChoix = choix[Random.Range(0, 3)];
 
-        float apresY = posY + longueurChemin;
-
-        /* Les chemins partent de X=0 (centre) */
-        emb.cheminA = CreerChemin(-ecartLateral, 0, posY + 2f, apresY);
-        emb.cheminB = CreerChemin(0, 0, posY + 2f, apresY);
-        emb.cheminC = CreerChemin(ecartLateral, 0, posY + 2f, apresY);
+        /* Genere les 3 chemins COMPLETS (tunnel + retour + segment droit
+           jusqu'au prochain embranchement) */
+        emb.cheminA = CreerCheminComplet(-ecartLateral, posY);
+        emb.cheminB = CreerCheminComplet(0, posY);
+        emb.cheminC = CreerCheminComplet(ecartLateral, posY);
 
         anciensObjets.Add(embObj);
     }
 
-    List<Transform> CreerChemin(float targetX, float startX, float startY, float endY)
+    /* Cree un chemin complet : entree tunnel + tunnel + sortie + segment droit
+       jusqu'au prochain embranchement (pour eviter que le vaisseau s'arrete) */
+    List<Transform> CreerCheminComplet(float targetX, float startY)
     {
         List<Transform> waypoints = new List<Transform>();
 
-        /* Entree du tunnel */
-        GameObject wp1 = new GameObject("Tunnel_" + targetX + "_entree");
-        wp1.transform.position = new Vector3((startX + targetX) / 2f, startY + 2f, 0);
+        /* Entree du tunnel : transition douce vers le cote */
+        GameObject wp1 = new GameObject("Tunnel_entree_" + targetX);
+        wp1.transform.position = new Vector3(targetX * 0.5f, startY + 4f, 0);
         waypoints.Add(wp1.transform);
         anciensObjets.Add(wp1);
 
-        /* Milieu du tunnel (c'est ici qu'apparait le decor) */
-        GameObject wp2 = new GameObject("Tunnel_" + targetX + "_milieu");
-        wp2.transform.position = new Vector3(targetX, (startY + endY) / 2f, 0);
+        /* Arrivee plein cote */
+        GameObject wp2 = new GameObject("Tunnel_arrive_" + targetX);
+        wp2.transform.position = new Vector3(targetX, startY + 8f, 0);
         waypoints.Add(wp2.transform);
         anciensObjets.Add(wp2);
 
-        /* Reste dans le tunnel un moment (pour voir la consequence) */
-        GameObject wp3 = new GameObject("Tunnel_" + targetX + "_fin");
-        wp3.transform.position = new Vector3(targetX, endY, 0);
-        waypoints.Add(wp3.transform);
-        anciensObjets.Add(wp3);
+        /* Reste sur le cote pendant longueurTunnel
+           C'est ici que le decor est visible */
+        for (float y = startY + 12f; y <= startY + 8f + longueurTunnel; y += 5f)
+        {
+            GameObject wp = new GameObject("Tunnel_long_" + targetX + "_" + y);
+            wp.transform.position = new Vector3(targetX, y, 0);
+            waypoints.Add(wp.transform);
+            anciensObjets.Add(wp);
+        }
+
+        float yApresTunnel = startY + 8f + longueurTunnel;
 
         /* Sortie du tunnel : retour progressif vers le centre */
-        GameObject wp4 = new GameObject("Tunnel_" + targetX + "_sortie");
-        wp4.transform.position = new Vector3(targetX * 0.5f, endY + 5f, 0);
-        waypoints.Add(wp4.transform);
-        anciensObjets.Add(wp4);
+        GameObject wpSortie = new GameObject("Tunnel_sortie_" + targetX);
+        wpSortie.transform.position = new Vector3(targetX * 0.5f, yApresTunnel + 5f, 0);
+        waypoints.Add(wpSortie.transform);
+        anciensObjets.Add(wpSortie);
 
-        /* Retour complet au centre (X=0) */
-        GameObject wp5 = new GameObject("Tunnel_" + targetX + "_centre");
-        wp5.transform.position = new Vector3(0, endY + 10f, 0);
-        waypoints.Add(wp5.transform);
-        anciensObjets.Add(wp5);
+        /* Retour au centre */
+        GameObject wpCentre = new GameObject("Tunnel_centre_" + targetX);
+        wpCentre.transform.position = new Vector3(0, yApresTunnel + 10f, 0);
+        waypoints.Add(wpCentre.transform);
+        anciensObjets.Add(wpCentre);
+
+        /* Segment droit jusqu'au prochain embranchement
+           POUR EVITER QUE LE VAISSEAU S'ARRETE */
+        float yProchainEmbranchement = startY + distanceEntreEmbranchements;
+        for (float y = yApresTunnel + 15f; y <= yProchainEmbranchement; y += 5f)
+        {
+            GameObject wp = new GameObject("Apres_tunnel_" + targetX + "_" + y);
+            wp.transform.position = new Vector3(0, y, 0);
+            waypoints.Add(wp.transform);
+            anciensObjets.Add(wp);
+        }
 
         return waypoints;
     }

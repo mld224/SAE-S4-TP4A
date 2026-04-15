@@ -2,14 +2,8 @@ using UnityEngine;
 
 public class ScrollingBackground : MonoBehaviour
 {
-    /* Reference vers le vehicule pour suivre sa position */
     public Transform player;
-
-    /* Taille du fond en Y (hauteur de l'image en unites Unity)
-       A ajuster selon la taille de votre image */
     public float hauteurFond = 20f;
-
-    /* Le Renderer du fond pour acceder au material */
     private Renderer rend;
 
     void Start()
@@ -19,16 +13,15 @@ public class ScrollingBackground : MonoBehaviour
 
     void Update()
     {
-        /* Le fond suit le joueur horizontalement et verticalement */
+        /* Le background reste centre en X (toujours visible)
+           et suit le joueur en Y pour l'effet de defilement */
         transform.position = new Vector3(
-            player.position.x,
-            player.position.y,
-            10f  /* Z = 10 pour etre derriere tout le reste */
+            0f,                  /* X fixe au centre */
+            player.position.y,   /* Y suit le vaisseau */
+            10f                   /* Z derriere tout */
         );
 
-        /* Decale la texture en fonction de la position du joueur
-           Ca donne l'illusion que le fond defile a l'infini
-           sans jamais s'arreter */
+        /* Defilement de la texture pour effet infini */
         float offsetY = player.position.y / hauteurFond;
         rend.material.mainTextureOffset = new Vector2(0, offsetY);
     }

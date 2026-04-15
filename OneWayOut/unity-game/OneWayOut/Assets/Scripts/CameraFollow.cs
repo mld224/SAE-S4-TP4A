@@ -8,7 +8,15 @@ public class CameraFollow : MonoBehaviour
 
     void LateUpdate()
     {
-        Vector3 targetPosition = target.position + offset;
+        /* La camera suit le vaisseau UNIQUEMENT en Y
+           En X elle reste fixe a 0 (au centre de la map)
+           Comme ca le vaisseau bouge visiblement a gauche/droite */
+        Vector3 targetPosition = new Vector3(
+            0f,                           /* X fixe au centre */
+            target.position.y + offset.y, /* Y suit le vaisseau */
+            offset.z                       /* Z fixe (camera) */
+        );
+
         transform.position = Vector3.Lerp(
             transform.position,
             targetPosition,

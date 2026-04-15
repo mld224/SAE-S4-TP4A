@@ -63,12 +63,12 @@ public class VoteManager : MonoBehaviour
             GameObject decorPrefab = currentEmbranchement.GetDecorPrefab(resultat);
             var chemin = currentEmbranchement.GetChemin(resultat);
 
-            if (decorPrefab != null && chemin.Count >= 2)
+            if (decorPrefab != null && chemin.Count >= 4)
             {
-                /* Position au milieu du tunnel */
-                Vector3 positionDecor = chemin[1].position;
+                /* Position au milieu du tunnel : on prend un waypoint vers le milieu de la liste */
+                int indexMilieu = chemin.Count / 2;
+                Vector3 positionDecor = chemin[indexMilieu].position;
                 GameObject decorInstance = Instantiate(decorPrefab, positionDecor, Quaternion.identity);
-                /* Destruction automatique apres 15 secondes */
                 Destroy(decorInstance, 15f);
             }
 

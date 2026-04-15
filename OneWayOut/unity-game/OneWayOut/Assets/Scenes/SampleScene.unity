@@ -786,7 +786,7 @@ MeshRenderer:
   m_SmallMeshCulling: 1
   m_ForceMeshLod: -1
   m_MeshLodSelectionBias: 0
-  m_RenderingLayerMask: 1
+  m_RenderingLayerMask: 4294967295
   m_RendererPriority: 0
   m_Materials:
   - {fileID: 2100000, guid: 53fbc2028a2bedf44800503b68b798e4, type: 2}
@@ -1296,7 +1296,7 @@ MonoBehaviour:
   decorMauvaisPrefab: {fileID: 736473214}
   distanceEntreEmbranchements: 30
   ecartLateral: 5
-  longueurChemin: 10
+  longueurTunnel: 25
   distanceGeneration: 40
 --- !u!114 &1539846497
 MonoBehaviour:
@@ -1526,6 +1526,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 191699087639653059, guid: 1ed628b1b8566e7459398cd97a50be67, type: 3}
+      propertyPath: m_SortingOrder
+      value: -4
+      objectReference: {fileID: 0}
     - target: {fileID: 353023963498579191, guid: 1ed628b1b8566e7459398cd97a50be67, type: 3}
       propertyPath: m_Color.b
       value: 0.2781139
@@ -1537,6 +1541,10 @@ PrefabInstance:
     - target: {fileID: 353023963498579191, guid: 1ed628b1b8566e7459398cd97a50be67, type: 3}
       propertyPath: m_Color.r
       value: 0.99371064
+      objectReference: {fileID: 0}
+    - target: {fileID: 353023963498579191, guid: 1ed628b1b8566e7459398cd97a50be67, type: 3}
+      propertyPath: m_SortingOrder
+      value: -5
       objectReference: {fileID: 0}
     - target: {fileID: 6009047194948040143, guid: 1ed628b1b8566e7459398cd97a50be67, type: 3}
       propertyPath: m_Name
@@ -1552,7 +1560,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8069077503868902635, guid: 1ed628b1b8566e7459398cd97a50be67, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 8069077503868902635, guid: 1ed628b1b8566e7459398cd97a50be67, type: 3}
       propertyPath: m_LocalRotation.w
@@ -1582,6 +1590,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8244233932867533175, guid: 1ed628b1b8566e7459398cd97a50be67, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 8244233932867533175, guid: 1ed628b1b8566e7459398cd97a50be67, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 15
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1595,9 +1611,29 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 5251225285581232413, guid: 2b2521bcbce1a244696fd380255116d4, type: 3}
+      propertyPath: m_SortingOrder
+      value: -5
+      objectReference: {fileID: 0}
+    - target: {fileID: 5556546485325899467, guid: 2b2521bcbce1a244696fd380255116d4, type: 3}
+      propertyPath: m_SortingOrder
+      value: -4
+      objectReference: {fileID: 0}
     - target: {fileID: 5912730862971419892, guid: 2b2521bcbce1a244696fd380255116d4, type: 3}
       propertyPath: m_Name
       value: DecorBon
+      objectReference: {fileID: 0}
+    - target: {fileID: 6690344222520944086, guid: 2b2521bcbce1a244696fd380255116d4, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 6690344222520944086, guid: 2b2521bcbce1a244696fd380255116d4, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 7053473560830779490, guid: 2b2521bcbce1a244696fd380255116d4, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7053473560830779490, guid: 2b2521bcbce1a244696fd380255116d4, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1609,7 +1645,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7053473560830779490, guid: 2b2521bcbce1a244696fd380255116d4, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 7053473560830779490, guid: 2b2521bcbce1a244696fd380255116d4, type: 3}
       propertyPath: m_LocalRotation.w
