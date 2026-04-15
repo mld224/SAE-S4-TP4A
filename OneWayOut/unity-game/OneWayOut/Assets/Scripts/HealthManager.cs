@@ -5,7 +5,7 @@ public class HealthManager : MonoBehaviour
 {
     public float vieMax = 100f;
     public float vieCourante;
-    public float pertesParSeconde = 2f;
+    public float pertesParSeconde = 1f;
     public float bonusVie = 20f;
     public float malusVie = 15f;
     public Slider barreDeVie;

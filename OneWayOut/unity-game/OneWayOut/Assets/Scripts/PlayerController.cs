@@ -54,7 +54,14 @@ public class PlayerController : MonoBehaviour
        waypointsChoisis = la liste de points du chemin A, B ou C */
     public void SuivreChemin(List<Transform> waypointsChoisis)
     {
-        /* On insere les nouveaux waypoints juste apres la position actuelle */
-        waypoints.InsertRange(currentWaypoint, waypointsChoisis);
+        /* Supprime tous les waypoints apres la position actuelle
+           pour que le vaisseau ne revienne pas sur l'ancien chemin */
+        if (currentWaypoint < waypoints.Count)
+        {
+            waypoints.RemoveRange(currentWaypoint, waypoints.Count - currentWaypoint);
+        }
+
+        /* Ajoute les nouveaux waypoints a la suite */
+        waypoints.AddRange(waypointsChoisis);
     }
 }
