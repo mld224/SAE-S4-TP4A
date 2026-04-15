@@ -1,135 +1,149 @@
 using UnityEngine;
+using UnityEngine.Audio;
 using UnityEngine.UI;
 
 public class HealthManager : MonoBehaviour
 {
     /* Valeurs de vie (modifiables dans l'inspecteur) */
     public float vieMax = 100f;
-    public float vieCourante;
+public float vieCourante;
 
-    /* Vitesse de perte de vie (par seconde de jeu) */
-    public float pertesParSeconde = 1f;
+/* Vitesse de perte de vie (par seconde de jeu) */
+public float pertesParSeconde = 1f;
 
-    /* Bonus et malus applique lors d'un bon/mauvais choix */
-    public float bonusVie = 20f;
-    public float malusVie = 15f;
+/* Bonus et malus appliques lors d'un bon/mauvais choix */
+public float bonusVie = 20f;
+public float malusVie = 15f;
 
-    /* Slider UI qui affiche la barre de vie */
-    public Slider barreDeVie;
+/* === NOUVELLE BARRE DE VIE ===
+   Au lieu d'un Slider, on utilise une Image en mode "Filled"
+   qui se vide/remplit selon le pourcentage de vie.
+   Tu dois glisser l'Image "BarFill" dans ce champ */
+public Image barreDeVieFill;
 
-    /* Reference vers GameOverManager pour declencher l'ecran Game Over */
-    public GameOverManager gameOverManager;
+/* Reference vers GameOverManager pour declencher l'ecran Game Over */
+public GameOverManager gameOverManager;
 
-    /* Reference vers VoteManager pour savoir si un vote est en cours
-       (la vie ne baisse pas pendant un vote) */
-    public VoteManager voteManager;
+/* Reference vers VoteManager pour savoir si un vote est en cours */
+public VoteManager voteManager;
 
-    /* Reference vers le SpriteRenderer du vaisseau
-       pour changer son sprite selon la vie */
-    public SpriteRenderer vehiculeRenderer;
+/* Reference vers le SpriteRenderer du vaisseau */
+public SpriteRenderer vehiculeRenderer;
 
-    /* 3 sprites du vaisseau : petit (faible vie), moyen, grand (haute vie) */
-    public Sprite[] vaisseauSprites;
+/* 3 sprites du vaisseau : petit / moyen / grand */
+public Sprite[] vaisseauSprites;
 
-    /* Sons joues lors d'un bon/mauvais choix (optionnels) */
-    public AudioSource audioSource;
-    public AudioClip sonBonChoix;
-    public AudioClip sonMauvaisChoix;
+/* Sons joues lors d'un bon/mauvais choix (optionnels) */
+public AudioSource audioSource;
+public AudioClip sonBonChoix;
+public AudioClip sonMauvaisChoix;
 
-    /* Flag pour eviter de declencher Game Over plusieurs fois */
-    private bool gameOverDeclenche = false;
+/* Flag pour eviter de declencher Game Over plusieurs fois */
+private bool gameOverDeclenche = false;
 
-    void Start()
+void Start()
+{
+    vieCourante = vieMax;
+    MettreAJourSprite();
+    MettreAJourBarre();
+}
+
+void Update()
+{
+    /* La vie ne baisse pas pendant un vote */
+    if (voteManager != null && voteManager.isVoting)
     {
-        /* Initialise la vie a son maximum */
-        vieCourante = vieMax;
-        MettreAJourSprite();
+        MettreAJourBarre();
+        return;
     }
 
-    void Update()
+    /* Perte de vie continue */
+    vieCourante -= pertesParSeconde * Time.deltaTime;
+    vieCourante = Mathf.Clamp(vieCourante, 0, vieMax);
+
+    MettreAJourBarre();
+
+    if (vieCourante <= 0 && !gameOverDeclenche)
     {
-        /* Si un vote est en cours, on ne baisse pas la vie
-           mais on met quand meme la barre a jour au cas ou */
-        if (voteManager != null && voteManager.isVoting)
-        {
-            if (barreDeVie != null)
-                barreDeVie.value = vieCourante / vieMax;
-            return;
+        gameOverDeclenche = true;
+        GameOver();
+    }
+}
+
+/* Met a jour le Fill Amount de la barre (entre 0 et 1)
+   fillAmount = 0 → barre vide
+   fillAmount = 1 → barre pleine */
+void MettreAJourBarre()
+{
+    if (barreDeVieFill != null)
+    {
+        barreDeVieFill.fillAmount = vieCourante / vieMax;
+
+            float pourcentage = vieCourante / vieMax;
+
+            Color rouge = new Color(1f, 0f, 0f);
+            Color jaune = new Color(1f, 0.85f, 0.2f);
+            Color vert = new Color(0f, 1f, 0f);
+
+            if (pourcentage > 0.5f)
+            {
+                float t = (pourcentage - 0.5f) / 0.5f;
+                barreDeVieFill.color = Color.Lerp(jaune, vert, t);
+            }
+            else
+            {
+                float t = pourcentage / 0.5f;
+                barreDeVieFill.color = Color.Lerp(rouge, jaune, t);
+            }
         }
+}
 
-        /* La vie diminue continuellement pour mettre la pression */
-        vieCourante -= pertesParSeconde * Time.deltaTime;
+public void BonChoix()
+{
+    vieCourante += bonusVie;
+    vieCourante = Mathf.Clamp(vieCourante, 0, vieMax);
+    MettreAJourSprite();
+    MettreAJourBarre();
 
-        /* Mathf.Clamp empeche la vie de depasser 0 ou vieMax */
-        vieCourante = Mathf.Clamp(vieCourante, 0, vieMax);
+    if (audioSource != null && sonBonChoix != null)
+        audioSource.PlayOneShot(sonBonChoix);
+}
 
-        /* Mise a jour de la barre de vie
-           Slider.value = valeur entre 0 (vide) et 1 (plein) */
-        if (barreDeVie != null)
-            barreDeVie.value = vieCourante / vieMax;
+public void MauvaisChoix()
+{
+    vieCourante -= malusVie;
+    vieCourante = Mathf.Clamp(vieCourante, 0, vieMax);
+    MettreAJourSprite();
+    MettreAJourBarre();
 
-        /* Si la vie atteint 0 → Game Over */
-        if (vieCourante <= 0 && !gameOverDeclenche)
-        {
-            gameOverDeclenche = true;
-            GameOver();
-        }
-    }
+    if (audioSource != null && sonMauvaisChoix != null)
+        audioSource.PlayOneShot(sonMauvaisChoix);
+}
 
-    /* Appele par VoteManager quand le joueur a fait un bon choix */
-    public void BonChoix()
-    {
-        vieCourante += bonusVie;
-        /* Clamp pour pas depasser vieMax */
-        vieCourante = Mathf.Clamp(vieCourante, 0, vieMax);
-        MettreAJourSprite();
+/* Change le sprite du vaisseau selon le pourcentage de vie */
+void MettreAJourSprite()
+{
+    if (vehiculeRenderer == null || vaisseauSprites.Length == 0) return;
 
-        /* Joue le son de bon choix s'il est configure */
-        if (audioSource != null && sonBonChoix != null)
-            audioSource.PlayOneShot(sonBonChoix);
-    }
+    float pourcentage = vieCourante / vieMax;
+    int index;
 
-    /* Appele par VoteManager quand le joueur a fait un mauvais choix */
-    public void MauvaisChoix()
-    {
-        vieCourante -= malusVie;
-        vieCourante = Mathf.Clamp(vieCourante, 0, vieMax);
-        MettreAJourSprite();
+    if (pourcentage <= 0.33f)
+        index = 0;
+    else if (pourcentage <= 0.66f)
+        index = 1;
+    else
+        index = 2;
 
-        if (audioSource != null && sonMauvaisChoix != null)
-            audioSource.PlayOneShot(sonMauvaisChoix);
-    }
+    if (index < vaisseauSprites.Length)
+        vehiculeRenderer.sprite = vaisseauSprites[index];
+}
 
-    /* Change le sprite du vaisseau selon le pourcentage de vie
-       0-33% → petit vaisseau (element 0)
-       34-66% → moyen (element 1)
-       67-100% → grand vaisseau (element 2) */
-    void MettreAJourSprite()
-    {
-        if (vehiculeRenderer == null || vaisseauSprites.Length == 0) return;
-
-        float pourcentage = vieCourante / vieMax;
-        int index;
-
-        if (pourcentage <= 0.33f)
-            index = 0;
-        else if (pourcentage <= 0.66f)
-            index = 1;
-        else
-            index = 2;
-
-        if (index < vaisseauSprites.Length)
-            vehiculeRenderer.sprite = vaisseauSprites[index];
-    }
-
-    /* Declenche le Game Over : affiche le panel et met le jeu en pause */
-    void GameOver()
-    {
-        if (gameOverManager != null)
-            gameOverManager.DeclencherGameOver();
-        else
-            Time.timeScale = 0;
-    }
-
-
+void GameOver()
+{
+    if (gameOverManager != null)
+        gameOverManager.DeclencherGameOver();
+    else
+        Time.timeScale = 0;
+}
 }
