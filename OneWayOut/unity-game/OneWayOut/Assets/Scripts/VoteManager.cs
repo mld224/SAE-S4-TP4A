@@ -70,38 +70,44 @@ public class VoteManager : MonoBehaviour
 
         if (currentEmbranchement != null && health != null)
         {
-            /* CORRECTION DU BUG : if/else bien separes
-               Si bon choix → bonus vie + bonus score
-               Sinon → perte de vie */
-            if (resultat == currentEmbranchement.bonChoix)
+            /* 3 cas possibles :
+               1. Bon choix → bonus de vie + bonus de score
+               2. Mauvais choix → perte de vie
+               3. Neutre → rien de special (juste la vie qui baisse normalement) */
+            if (currentEmbranchement.EstBonChoix(resultat))
             {
                 health.BonChoix();
                 if (scoreManager != null)
                     scoreManager.BonChoix();
             }
-            else
+            else if (currentEmbranchement.EstMauvaisChoix(resultat))
             {
                 health.MauvaisChoix();
             }
+            /* Si c'est le chemin neutre, on ne fait rien (pas de bonus, pas de malus)
+               La vie continue de baisser normalement dans Update() */
 
-            /* Detruit l'ancien decor avant d'en creer un nouveau
-               (evite l'empilement des fonds qu'on avait avant) */
+            /* Detruit l'ancien decor avant d'en creer un nouveau */
             if (decorActuel != null)
             {
                 Destroy(decorActuel);
             }
 
-            /* Recupere le decor prefab associe au choix (bon/mauvais) */
+            /* Recupere le decor prefab associe au choix (bon/mauvais/neutre) */
             GameObject decorPrefab = currentEmbranchement.GetDecorPrefab(resultat);
             var chemin = currentEmbranchement.GetChemin(resultat);
 
-            /* Instancie le decor au milieu du chemin choisi (au milieu du tunnel)
-               pour que le joueur voit le decor au moment ou il passe dedans */
+            /* Instancie le decor AU CENTRE DE L'ECRAN (X=0)
+               pour que le joueur le voie en plein milieu quel que soit
+               le chemin choisi (gauche, centre ou droite) */
             if (decorPrefab != null && chemin.Count >= 4)
             {
                 int indexMilieu = chemin.Count / 2;
                 Vector3 positionDecor = chemin[indexMilieu].position;
-                positionDecor.z = 5f; /* Force le decor derriere le vaisseau */
+                /* CORRECTION : force X=0 pour centrer le decor
+                   (la camera est a X=0, donc le decor est pile au milieu) */
+                positionDecor.x = 0f;
+                positionDecor.z = 5f;
                 decorActuel = Instantiate(decorPrefab, positionDecor, Quaternion.identity);
             }
 
