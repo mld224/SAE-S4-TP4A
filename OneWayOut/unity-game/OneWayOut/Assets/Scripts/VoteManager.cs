@@ -69,7 +69,7 @@ public class VoteManager : MonoBehaviour
                 int indexMilieu = chemin.Count / 2;
                 Vector3 positionDecor = chemin[indexMilieu].position;
                 GameObject decorInstance = Instantiate(decorPrefab, positionDecor, Quaternion.identity);
-                Destroy(decorInstance, 15f);
+                Destroy(decorInstance, 25f);
             }
 
             player.SuivreChemin(chemin);
