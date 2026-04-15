@@ -9,24 +9,33 @@ public class ScoreManager : MonoBehaviour
     /* Points gagnes a chaque bon choix */
     public int pointsBonChoix = 100;
 
-    /* Points gagnes a chaque seconde de survie */
+    /* Points gagnes par seconde de survie */
     public float pointsParSeconde = 5f;
 
-    /* Reference vers le VoteManager pour savoir si on vote */
+    /* Reference vers VoteManager pour ne pas compter pendant un vote */
     public VoteManager voteManager;
 
     /* Texte UI pour afficher le score */
     public TMP_Text scoreText;
 
-    /* Compteur interne pour les points/seconde */
+    /* Compteur interne pour gerer les points/seconde */
     private float compteurTemps = 0f;
+
+    void Start()
+    {
+        /* Reset du score au demarrage (au cas ou) */
+        score = 0;
+        compteurTemps = 0f;
+        if (scoreText != null)
+            scoreText.text = "Score : 0";
+    }
 
     void Update()
     {
         /* Pas de score pendant un vote */
         if (voteManager != null && voteManager.isVoting) return;
 
-        /* Score base sur le temps de survie */
+        /* Chaque seconde ecoulee, on ajoute les points de survie */
         compteurTemps += Time.deltaTime;
         if (compteurTemps >= 1f)
         {
@@ -44,3 +53,4 @@ public class ScoreManager : MonoBehaviour
         score += pointsBonChoix;
     }
 }
+

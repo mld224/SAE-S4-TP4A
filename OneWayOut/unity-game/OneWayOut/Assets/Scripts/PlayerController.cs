@@ -3,12 +3,11 @@ using System.Collections.Generic;
 
 public class PlayerController : MonoBehaviour
 {
-    /* Vitesse de deplacement du vehicule */
+    /* Vitesse de deplacement du vehicule (en unites par seconde) */
     public float speed = 5f;
 
     /* Liste des points que le vehicule doit suivre dans l'ordre
-       On les place dans la scene Unity (des GameObjects vides)
-       et on les glisse dans cette liste dans l'inspecteur */
+       Remplie dynamiquement par LevelGenerator au fur et a mesure */
     public List<Transform> waypoints;
 
     /* Index du waypoint actuel (celui vers lequel on se dirige) */
@@ -17,38 +16,42 @@ public class PlayerController : MonoBehaviour
     /* Si false, le vehicule s'arrete (pendant un vote par ex) */
     public bool canMove = true;
 
-    private void Start()
+    void Awake()
     {
+        /* Awake() est appele AVANT tous les Start() des autres scripts
+           Donc on s'assure que la liste existe et que l'index est a 0
+           AVANT que LevelGenerator commence a ajouter des waypoints */
+        if (waypoints == null)
+            waypoints = new List<Transform>();
+        else
+            waypoints.Clear();
+
         currentWaypoint = 0;
         canMove = true;
-        if(waypoints == null)
-        {
-            waypoints = new List<Transform>();
-        }
-        else
-        {
-            waypoints.Clear();
-        }
     }
 
     void Update()
     {
+        /* Si le vaisseau est arrete (ex: pendant un vote), on ne bouge pas */
         if (!canMove) return;
+
+        /* Si on a atteint le dernier waypoint, on ne bouge plus */
         if (currentWaypoint >= waypoints.Count) return;
 
-        /* On deplace le vehicule vers le waypoint actuel
-           MoveTowards avance d'un pas (speed * deltaTime) vers la cible
-           sans jamais la depasser */
+        /* Recupere le waypoint vers lequel on va */
         Transform target = waypoints[currentWaypoint];
+
+        /* MoveTowards avance vers la cible sans jamais la depasser
+           speed * Time.deltaTime = distance parcourue cette frame */
         transform.position = Vector3.MoveTowards(
             transform.position,
             target.position,
             speed * Time.deltaTime
         );
 
-        /* Rotation du vehicule pour qu'il regarde vers le waypoint
-           Atan2 calcule l'angle entre la position actuelle et la cible
-           On soustrait 90 car le sprite pointe vers le haut par defaut */
+        /* Calcule la direction et oriente le sprite vers la cible
+           Atan2 retourne l'angle en radians, on le convertit en degres
+           On soustrait 90 car le sprite par defaut pointe vers le haut */
         Vector3 dir = target.position - transform.position;
         if (dir != Vector3.zero)
         {
@@ -56,26 +59,25 @@ public class PlayerController : MonoBehaviour
             transform.rotation = Quaternion.Euler(0, 0, angle);
         }
 
-        /* Si on est arrive au waypoint (distance < 0.1)
-           on passe au suivant */
+        /* Quand on est assez proche du waypoint (0.1 unite), on passe au suivant */
         if (Vector3.Distance(transform.position, target.position) < 0.1f)
         {
             currentWaypoint++;
         }
     }
 
-    /* Appele par VoteManager pour inserer les waypoints du chemin choisi
-       waypointsChoisis = la liste de points du chemin A, B ou C */
+    /* Appele par VoteManager apres un vote pour donner les nouveaux waypoints
+       waypointsChoisis = liste de points du chemin A, B ou C */
     public void SuivreChemin(List<Transform> waypointsChoisis)
     {
-        /* Supprime tous les waypoints apres la position actuelle
-           pour que le vaisseau ne revienne pas sur l'ancien chemin */
+        /* On supprime tous les waypoints a partir de la position actuelle
+           Ca evite que le vaisseau termine l'ancien chemin apres avoir vote */
         if (currentWaypoint < waypoints.Count)
         {
             waypoints.RemoveRange(currentWaypoint, waypoints.Count - currentWaypoint);
         }
 
-        /* Ajoute les nouveaux waypoints a la suite */
+        /* Puis on ajoute les nouveaux waypoints du chemin choisi a la suite */
         waypoints.AddRange(waypointsChoisis);
     }
 }

@@ -1821,6 +1821,9 @@ MonoBehaviour:
   - {fileID: -8950951021390113103, guid: bcfb50b73c135694e8f64e9098e8417d, type: 3}
   - {fileID: -6560143675306158196, guid: 01a09b81c4f7e6e4690aa77e9413eb4e, type: 3}
   - {fileID: 1626337501822821604, guid: 14482076ee010f54aa8b465d89562127, type: 3}
+  audioSource: {fileID: 0}
+  sonBonChoix: {fileID: 0}
+  sonMauvaisChoix: {fileID: 0}
 --- !u!114 &1539846498
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1852,9 +1855,9 @@ MonoBehaviour:
   resultText: {fileID: 1156313206}
   player: {fileID: 1130715524}
   health: {fileID: 1539846497}
+  scoreManager: {fileID: 1539846501}
   voteDuration: 10
   isVoting: 0
-  scoreManager: {fileID: 1539846501}
 --- !u!4 &1539846500
 Transform:
   m_ObjectHideFlags: 0
@@ -2387,7 +2390,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6690344222520944086, guid: 2b2521bcbce1a244696fd380255116d4, type: 3}
       propertyPath: m_LocalScale.x
-      value: 11
+      value: 13
       objectReference: {fileID: 0}
     - target: {fileID: 6690344222520944086, guid: 2b2521bcbce1a244696fd380255116d4, type: 3}
       propertyPath: m_LocalScale.y
