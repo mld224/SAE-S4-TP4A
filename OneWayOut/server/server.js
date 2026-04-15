@@ -58,6 +58,12 @@ function broadcast(message) {
   });
 }
 
+/* Envoie le compteur de joueurs a tous les clients (Unity + tels)
+   Unity l'utilise pour afficher le nombre de joueurs dans le lobby */
+function broadcastPlayerCount() {
+  broadcast(JSON.stringify({ type: 'player_count', count: clients.size }));
+}
+
 function lancerVote(duree = 10) {
   votes = { A: 0, B: 0, C: 0 };
   voteOuvert = true;
@@ -76,32 +82,36 @@ wss.on('connection', (ws) => {
   clients.add(ws);
   console.log(`Joueur connecte ! Total: ${clients.size}`);
 
+  /* Nouveau : on envoie le compteur a jour a tous les clients */
+  broadcastPlayerCount();
+
   ws.on('message', (message) => {
     const data = message.toString();
 
-    /* Unity demande de lancer un vote (ex: "START_VOTE:8") */
     if (data.startsWith("START_VOTE")) {
       const parts = data.split(":");
       const duree = parseInt(parts[1]) || 10;
       lancerVote(duree);
     }
 
-    /* Unity informe qu'il y a eu un Game Over
-       → on previent tous les tel d'afficher le bouton Recommencer */
     if (data === "GAME_OVER") {
       voteOuvert = false;
       broadcast(JSON.stringify({ type: 'game_over' }));
       console.log("Game Over recu, bouton Recommencer affiche sur les tels");
     }
 
-    /* Un tel demande de redemarrer la partie
-       → on previent tous les clients (autres tel + Unity) */
     if (data === "RESTART") {
       broadcast(JSON.stringify({ type: 'restart' }));
       console.log("Restart demande par un joueur, partie relancee");
     }
 
-    /* Vote classique d'un tel (A, B, C) */
+    /* Nouveau : le presenteur a clique sur Commencer dans Unity
+       → on previent tous les tels que le jeu a commence */
+    if (data === "GAME_START") {
+      broadcast(JSON.stringify({ type: 'game_start' }));
+      console.log("Partie lancee par le presenteur");
+    }
+
     if (voteOuvert && ['A', 'B', 'C'].includes(data)) {
       votes[data]++;
       console.log(`Vote recu: ${data} | A:${votes.A} B:${votes.B} C:${votes.C}`);
@@ -111,6 +121,8 @@ wss.on('connection', (ws) => {
   ws.on('close', () => {
     clients.delete(ws);
     console.log(`Joueur deconnecte. Total: ${clients.size}`);
+    /* Nouveau : on previent que le compteur a baisse */
+    broadcastPlayerCount();
   });
 });
 
