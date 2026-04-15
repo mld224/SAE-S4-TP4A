@@ -17,6 +17,20 @@ public class PlayerController : MonoBehaviour
     /* Si false, le vehicule s'arrete (pendant un vote par ex) */
     public bool canMove = true;
 
+    private void Start()
+    {
+        currentWaypoint = 0;
+        canMove = true;
+        if(waypoints == null)
+        {
+            waypoints = new List<Transform>();
+        }
+        else
+        {
+            waypoints.Clear();
+        }
+    }
+
     void Update()
     {
         if (!canMove) return;

@@ -1814,7 +1814,7 @@ MonoBehaviour:
   bonusVie: 20
   malusVie: 15
   barreDeVie: {fileID: 1190079611}
-  gameOverManager: {fileID: 0}
+  gameOverManager: {fileID: 1539846502}
   voteManager: {fileID: 1539846499}
   vehiculeRenderer: {fileID: 1130715525}
   vaisseauSprites:

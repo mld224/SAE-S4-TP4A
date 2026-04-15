@@ -59,12 +59,18 @@ public class VoteManager : MonoBehaviour
 
         if (currentEmbranchement != null && health != null)
         {
-            if (resultat == currentEmbranchement.bonChoix)
+            if(resultat == currentEmbranchement.bonChoix)
+            {
                 health.BonChoix();
-            if (scoreManager != null && resultat == currentEmbranchement.bonChoix)
-                scoreManager.BonChoix();
+                if (scoreManager != null)
+                {
+                    scoreManager.BonChoix();
+                }
+            }
             else
+            {
                 health.MauvaisChoix();
+            }
 
             /* DETRUIRE L'ANCIEN DECOR avant d'en creer un nouveau */
             if (decorActuel != null)
